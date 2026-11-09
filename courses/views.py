@@ -45,6 +45,18 @@ def ask_studymate(request):
 
     question = data.get("question")
     material_id = data.get("material_id")
+    response_mode = data.get("response_mode", "simple")
+
+    if response_mode not in (
+        "simple",
+        "normal",
+        "example_based",
+        "exam_oriented"
+    ):
+        return JsonResponse(
+            {"error": "Invalid response mode."},
+            status=400
+        )
 
     if not isinstance(question, str) or not question.strip():
         return JsonResponse(
@@ -106,7 +118,11 @@ def ask_studymate(request):
         )
 
         # Generate an answer using Gemini
-        answer = generate_answer(question, results)
+        answer = generate_answer(
+            question,
+            results,
+            response_mode=response_mode
+        )
 
         return JsonResponse({
             "question": question,
