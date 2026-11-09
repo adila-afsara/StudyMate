@@ -1668,6 +1668,35 @@ main::after {
 
 }
 
+
+/* Rendered Gemini Markdown: scoped to assistant messages only. */
+.m.b .markdown-answer { white-space: normal; overflow-wrap: anywhere; line-height: 1.65; }
+.m.b .markdown-answer > :first-child { margin-top: 0; }
+.m.b .markdown-answer > :last-child { margin-bottom: 0; }
+.m.b .markdown-answer p { margin: 0 0 11px; }
+.m.b .markdown-answer h1,
+.m.b .markdown-answer h2,
+.m.b .markdown-answer h3,
+.m.b .markdown-answer h4 { margin: 15px 0 8px; line-height: 1.35; }
+.m.b .markdown-answer h1 { font-size: 21px; }
+.m.b .markdown-answer h2 { font-size: 19px; }
+.m.b .markdown-answer h3 { font-size: 17px; }
+.m.b .markdown-answer h4 { font-size: 15px; }
+.m.b .markdown-answer ul,
+.m.b .markdown-answer ol { padding-left: 24px; margin: 8px 0 12px; }
+.m.b .markdown-answer li { margin: 4px 0; }
+.m.b .markdown-answer li > p { margin-bottom: 4px; }
+.m.b .markdown-answer strong { font-weight: 700; }
+.m.b .markdown-answer blockquote { border-left: 3px solid var(--p); padding-left: 12px; margin: 12px 0; color: var(--muted); }
+.m.b .markdown-answer code { font-family: Consolas, monospace; background: var(--pl); padding: 2px 4px; border-radius: 4px; }
+.m.b .markdown-answer pre { overflow-x: auto; background: var(--pl); padding: 12px; border-radius: 9px; margin: 12px 0; }
+.m.b .markdown-answer pre code { padding: 0; }
+.m.b .markdown-answer table { border-collapse: collapse; display: block; max-width: 100%; overflow-x: auto; margin: 12px 0; }
+.m.b .markdown-answer th,
+.m.b .markdown-answer td { border: 1px solid var(--line); padding: 7px 9px; text-align: left; }
+.m.b .markdown-answer a { color: var(--pd); overflow-wrap: anywhere; }
+.m.b .markdown-answer hr { border: 0; border-top: 1px solid var(--line); margin: 14px 0; }
+
   </style>
 
  </head>
@@ -2592,6 +2621,10 @@ document.querySelectorAll('button[data-v="games"]').forEach((button) => {
 
 
 
+<!-- Pinned Markdown renderer and HTML sanitizer. Gemini output is untrusted input. -->
+<script src="https://cdn.jsdelivr.net/npm/marked@15.0.12/marked.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/dompurify@3.2.6/dist/purify.min.js"></script>
+
 <!-- StudyMate Django RAG integration: replaces demo chatbot behavior. -->
 
 <script>
@@ -2656,6 +2689,29 @@ document.querySelectorAll('button[data-v="games"]').forEach((button) => {
   }
 
 
+
+
+  // Safely format Gemini Markdown. If the libraries are unavailable, retain plain text.
+  function renderAssistantAnswer(container, answer) {
+    container.replaceChildren();
+    const body = document.createElement('div');
+    body.className = 'markdown-answer';
+    container.style.whiteSpace = 'normal';
+
+    if (window.marked && window.DOMPurify && typeof window.marked.parse === 'function') {
+      try {
+        const html = window.marked.parse(answer, { gfm: true, breaks: true });
+        body.innerHTML = window.DOMPurify.sanitize(html, { USE_PROFILES: { html: true } });
+      } catch (error) {
+        body.textContent = answer;
+        body.style.whiteSpace = 'pre-wrap';
+      }
+    } else {
+      body.textContent = answer;
+      body.style.whiteSpace = 'pre-wrap';
+    }
+    container.appendChild(body);
+  }
 
   async function loadMaterials() {
 
@@ -2750,7 +2806,7 @@ document.querySelectorAll('button[data-v="games"]').forEach((button) => {
 
       if (!response.ok) throw new Error(data.error || 'Request failed (' + response.status + ').');
 
-      pending.textContent = data.answer || 'StudyMate returned an empty answer.';
+      renderAssistantAnswer(pending, data.answer || 'StudyMate returned an empty answer.');
 
       // Show only verified source metadata; no fabricated PDF page citations.
 
