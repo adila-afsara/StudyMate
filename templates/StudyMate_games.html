@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Learning Games — StudyMate</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#F6F5FA;--card:#fff;--p:#6D4AE8;--pd:#5636C9;--pl:#F0ECFD;--line:#E7E4F0;--text:#17151F;--muted:#6C6880;--on:#fff;--ok:#1F8A5B;--okl:#E6F5EE;--bad:#D6455D;--badl:#FDEBEE;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#100E17;--card:#191624;--p:#9B82FF;--pd:#B9A8FF;--pl:#252038;--line:#2C2740;--text:#EEEBF7;--muted:#9A94AE;--on:#14101F;--okl:#17332A;--badl:#3A1D25}}
+:root[data-theme="dark"]{--bg:#100E17;--card:#191624;--p:#9B82FF;--pd:#B9A8FF;--pl:#252038;--line:#2C2740;--text:#EEEBF7;--muted:#9A94AE;--on:#14101F;--okl:#17332A;--badl:#3A1D25}
+*{margin:0;padding:0;box-sizing:border-box}body{font-family:'Inter',system-ui,sans-serif;font-size:15px;line-height:1.55;background:var(--bg);color:var(--text);min-height:100vh;-webkit-font-smoothing:antialiased}button,select{font:inherit}button{cursor:pointer}a{color:inherit;text-decoration:none}:focus-visible{outline:3px solid var(--p);outline-offset:2px}
+aside{position:sticky;top:0;z-index:10;display:flex;align-items:center;gap:24px;min-height:66px;padding:10px max(4vw,20px);background:var(--card);border-bottom:1px solid var(--line)}.sl{display:flex;align-items:center;gap:10px;font-size:18px;font-weight:700;letter-spacing:-.02em;white-space:nowrap}.sl i{width:34px;height:34px;border-radius:10px;background:var(--p);color:var(--on);display:grid;place-items:center;font-size:18px;font-style:normal}nav{flex:1;display:flex;gap:4px;align-items:center;flex-wrap:wrap}nav a{display:flex;align-items:center;gap:6px;padding:8px 11px;border-radius:99px;color:var(--muted);font-size:13px;font-weight:500;white-space:nowrap}nav a:hover{background:var(--bg);color:var(--text)}nav a.on{background:var(--pl);color:var(--pd);font-weight:600}.su{display:flex;align-items:center;gap:9px;font-size:13px;white-space:nowrap}.avatar{width:34px;height:34px;border-radius:50%;background:var(--pl);display:grid;place-items:center}
+main{width:min(1180px,92%);margin:0 auto;padding:36px 0 56px}.top{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;margin-bottom:26px}.eyebrow{color:var(--p);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}h1{font-size:clamp(26px,3vw,34px);letter-spacing:-.04em;line-height:1.2;margin-bottom:8px}h2{font-size:20px;letter-spacing:-.025em}h3{font-size:16px}.sub{color:var(--muted);max-width:680px}.pill{display:inline-flex;align-items:center;gap:6px;border-radius:99px;padding:6px 10px;background:var(--pl);color:var(--pd);font-size:12px;font-weight:600}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px;box-shadow:0 6px 24px rgba(28,20,60,.035)}.section-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:16px}.games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin-bottom:24px}.game-card{position:relative;overflow:hidden;display:flex;flex-direction:column;min-height:230px}.game-icon{width:52px;height:52px;border-radius:15px;background:var(--pl);display:grid;place-items:center;font-size:27px;margin-bottom:15px}.game-card p{color:var(--muted);font-size:14px;margin:7px 0 18px;max-width:470px}.game-card .btn{margin-top:auto;align-self:flex-start}.game-card.active-game{border-color:color-mix(in srgb,var(--p) 35%,var(--line))}.game-card .corner{position:absolute;right:18px;top:18px;font-size:11px;color:var(--muted);background:var(--bg);padding:5px 8px;border-radius:99px}
+.btn{border:0;border-radius:10px;padding:11px 16px;background:var(--p);color:var(--on);font-size:14px;font-weight:600;transition:background .15s,transform .15s}.btn:hover{background:var(--pd);transform:translateY(-1px)}.btn.secondary{background:var(--pl);color:var(--pd)}.btn.secondary:hover{background:var(--line)}.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}.setup{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}.setup p{color:var(--muted);font-size:14px;margin:7px 0 16px}.field-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}label{display:block;font-size:13px;font-weight:600;margin:0 0 7px}select{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);font-size:14px}.hint{font-size:12px;color:var(--muted);margin-top:12px}.info-list{display:grid;gap:13px;margin-top:16px}.info-row{display:flex;gap:11px;align-items:flex-start}.info-row .mini{width:32px;height:32px;border-radius:10px;background:var(--pl);display:grid;place-items:center;flex-shrink:0}.info-row p{margin:2px 0 0;font-size:13px;color:var(--muted)}
+#playArea{display:none;margin-top:24px}.play-top{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px}.stats{display:flex;gap:9px;flex-wrap:wrap}.stat{background:var(--bg);border:1px solid var(--line);padding:8px 12px;border-radius:11px;font-size:13px;color:var(--muted)}.stat strong{color:var(--text);margin-left:4px}.progress-track{height:7px;background:var(--pl);border-radius:99px;overflow:hidden;margin:14px 0 20px}.progress-fill{height:100%;width:0;background:var(--p);border-radius:99px;transition:width .25s}.match-board{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.match-card{min-height:105px;padding:16px;border:1.5px solid var(--line);border-radius:14px;background:var(--card);color:var(--text);font-weight:600;text-align:left;display:flex;align-items:center;justify-content:center;position:relative;transition:.15s;overflow-wrap:anywhere}.match-card:hover{border-color:var(--p);background:var(--pl)}.match-card.selected{border-color:var(--p);background:var(--pl);box-shadow:0 0 0 3px color-mix(in srgb,var(--p) 13%,transparent)}.match-card.matched{border-color:var(--ok);background:var(--okl);color:var(--ok);cursor:default}.match-card.wrong{border-color:var(--bad);background:var(--badl)}.match-card .kind{position:absolute;top:7px;left:9px;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:700}.feedback{min-height:28px;margin-top:13px;color:var(--muted);font-size:13px}.feedback.good{color:var(--ok)}.feedback.bad{color:var(--bad)}.complete{text-align:center;padding:28px 14px;display:none}.complete .trophy{font-size:46px;margin-bottom:8px}.complete h2{margin-bottom:8px}.complete p{color:var(--muted);margin-bottom:18px}.empty-note{padding:12px;border-radius:10px;background:var(--bg);font-size:12px;color:var(--muted);margin-top:14px}
+footer{text-align:center;color:var(--muted);font-size:12px;padding:16px 0 0}@media(max-width:950px){aside{align-items:flex-start;flex-wrap:wrap;gap:10px}.sl{margin-right:auto}nav{order:3;flex-basis:100%;overflow-x:auto;flex-wrap:nowrap}.su{margin-left:auto}.setup{grid-template-columns:1fr}}@media(max-width:620px){main{width:calc(100% - 28px);padding-top:26px}.games{grid-template-columns:1fr}.field-grid{grid-template-columns:1fr}.card{padding:17px}.match-board{gap:8px}.match-card{min-height:100px;padding:20px 8px 10px;font-size:13px}.top{display:block}.top>.pill{margin-top:12px}}
+</style>
+</head>
+<body>
+<aside>
+  <a class="sl" href="StudyMate_dashboard.html"><i>🎓</i>StudyMate</a>
+  <nav aria-label="Main navigation">
+    <a href="StudyMate_dashboard.html">🏠 Dashboard</a>
+    <a href="StudyMate_courses.html">📚 My Courses</a>
+    <a href="StudyMate_chatbot.html">💬 Ask StudyMate</a>
+    <a href="StudyMate_flashcards.html">🃏 Flashcards</a>
+    <a href="StudyMate_quiz.html">📝 Practice &amp; Quiz</a>
+    <a class="on" href="StudyMate_games.html">🎮 Games</a>
+    <a href="StudyMate_progress.html">📈 My Progress</a>
+  </nav>
+  <div class="su"><span class="avatar">🧑‍🎓</span><div><strong>Adila</strong><br><span style="color:var(--muted)">Junior, CSE</span></div></div>
+</aside>
+<main>
+  <div class="top"><div><div class="eyebrow">Learn by playing</div><h1>🎮 Learning Games</h1><p class="sub">Turn your course materials into short, interactive activities. Play, practise, and strengthen the topics you are learning.</p></div><span class="pill">✨ Course-material based</span></div>
+  <div class="games">
+    <article class="card game-card active-game"><span class="corner">AVAILABLE DEMO</span><div class="game-icon">🧩</div><h2>Match the Concepts</h2><p>Match each concept with its correct definition. Questions are intended to come from your selected course materials.</p><button class="btn" id="chooseMatch">Play Match →</button></article>
+    <article class="card game-card"><span class="corner">AVAILABLE DEMO</span><div class="game-icon">✓?</div><h2>True or False</h2><p>Read a statement from your course topics, decide whether it is true or false, and review the explanation.</p><button class="btn secondary" id="chooseTrueFalse">Play True or False →</button></article>
+  </div>
+  <section class="setup" id="setupArea">
+    <div class="card"><div class="section-head"><div><h2 id="setupHeading">Set up your Match game</h2><p style="color:var(--muted);font-size:13px;margin-top:5px">Choose what you want to practise.</p></div><span class="pill" id="setupPill">🧠 Recall practice</span></div>
+      <div class="field-grid"><div><label for="courseSelect">Course</label><select id="courseSelect"><option value="os">Operating Systems</option><option value="db">Database Systems</option><option value="se">Software Engineering</option></select></div><div><label for="topicSelect">Topic</label><select id="topicSelect"><option value="all">Mixed concepts</option><option value="process">Processes</option><option value="memory">Memory management</option></select></div><div><label for="pairCount">Number of pairs</label><select id="pairCount"><option value="4">4 pairs</option><option value="6" selected>6 pairs</option><option value="8">8 pairs</option></select></div><div><label for="modeSelect">Game mode</label><select id="modeSelect"><option value="relaxed">Relaxed — no timer</option><option value="timed">Timed challenge</option></select></div></div>
+      <button class="btn" id="startGame" style="margin-top:20px">Start matching →</button><p class="hint">Prototype note: this page currently uses sample questions to demonstrate the gameplay. Later, Django + RAG will generate pairs from the student's uploaded course material.</p>
+    </div>
+    <div class="card"><h2>How to play</h2><div class="info-list"><div class="info-row"><span class="mini">1</span><div><strong>Choose a course</strong><p>Select the topic you want to review.</p></div></div><div class="info-row"><span class="mini">2</span><div><strong>Find matching pairs</strong><p>Choose a concept card, then its matching definition.</p></div></div><div class="info-row"><span class="mini">3</span><div><strong>Review and improve</strong><p>Track your accuracy and revisit any concepts you missed.</p></div></div></div><div class="empty-note">StudyMate will later cite the source page or slide for each generated concept.</div></div>
+  </section>
+  <section id="playArea" class="card"><div class="play-top"><div><h2 id="gameTitle">Match the Concepts</h2><p id="gameSubtitle" style="color:var(--muted);font-size:13px;margin-top:4px">Choose a concept and its definition.</p></div><div class="stats"><div class="stat">Pairs <strong id="pairStat">0/6</strong></div><div class="stat">Moves <strong id="movesStat">0</strong></div><div class="stat" id="timerStat">Time <strong id="timeStat">0:00</strong></div></div></div><div class="progress-track"><div class="progress-fill" id="progressFill"></div></div><div class="match-board" id="matchBoard"></div><div id="trueFalseBoard" style="display:none;text-align:center;padding:22px 12px"><div class="pill" id="tfTopic" style="margin-bottom:14px">Course concept</div><h2 id="tfStatement" style="font-size:clamp(19px,2.5vw,25px);max-width:760px;margin:0 auto 24px">Statement appears here</h2><div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><button class="btn" id="tfTrue" style="min-width:140px">✓ True</button><button class="btn secondary" id="tfFalse" style="min-width:140px">✕ False</button></div><div id="tfExplanation" class="empty-note" style="display:none;max-width:760px;margin:18px auto 0;text-align:left"></div><button class="btn" id="tfNext" style="display:none;margin:18px auto 0">Next statement →</button></div><p class="feedback" id="feedback" aria-live="polite">Select a concept card, then select its definition.</p><div class="complete" id="completePanel"><div class="trophy">🏆</div><h2>All pairs matched!</h2><p id="resultText">Great work!</p><button class="btn" id="playAgain">Play again</button> <button class="btn secondary" id="changeSetup">Change settings</button></div><div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px"><button class="btn secondary" id="restartGame">Restart game</button><button class="btn secondary" id="backSetup">Back to setup</button></div></section>
+  <footer>StudyMate · Learn · Practise · Improve</footer>
+</main>
+<script>
+// Theme can be set by StudyMate's settings page using the same data-theme attribute.
+// These pairs are demo data only. The backend will later provide RAG-generated pairs.
+const demoSets = {
+  os: [
+    {term:'Process', definition:'A program that is currently being executed.', topic:'process'},
+    {term:'Context switch', definition:'Saving one process state and loading another.', topic:'process'},
+    {term:'Process ID (PID)', definition:'A unique identifier assigned to a process.', topic:'process'},
+    {term:'Deadlock', definition:'A state where processes wait indefinitely for resources.', topic:'process'},
+    {term:'Paging', definition:'A memory scheme that divides memory into fixed-size pages.', topic:'memory'},
+    {term:'Virtual memory', definition:'A technique that lets a system use storage as an extension of RAM.', topic:'memory'},
+    {term:'Thrashing', definition:'Excessive paging that leaves little time for useful execution.', topic:'memory'},
+    {term:'Scheduler', definition:'The OS component that selects a process to run.', topic:'process'}
+  ],
+  db: [
+    {term:'Primary key', definition:'A field that uniquely identifies each row in a table.', topic:'all'},
+    {term:'Foreign key', definition:'A field that references a key in another or the same table.', topic:'all'},
+    {term:'Normalization', definition:'Organizing tables to reduce redundancy and update anomalies.', topic:'all'},
+    {term:'SQL', definition:'A language used to define, query, and manipulate relational data.', topic:'all'},
+    {term:'Entity', definition:'A distinguishable real-world object represented in a database.', topic:'all'},
+    {term:'Transaction', definition:'A logical unit of database work.', topic:'all'},
+    {term:'Candidate key', definition:'A minimal set of attributes that uniquely identifies a row.', topic:'all'},
+    {term:'Referential integrity', definition:'A rule that keeps foreign-key references valid.', topic:'all'}
+  ],
+  se: [
+    {term:'Unit testing', definition:'Testing an individual component or module in isolation.', topic:'all'},
+    {term:'Branch coverage', definition:'Measuring whether each decision outcome has been executed.', topic:'all'},
+    {term:'Singleton pattern', definition:'A pattern that restricts a class to one instance.', topic:'all'},
+    {term:'Driver', definition:'A test component that calls a lower-level module.', topic:'all'},
+    {term:'Requirement', definition:'A documented capability or constraint the system must satisfy.', topic:'all'},
+    {term:'Regression testing', definition:'Retesting after changes to check existing behavior still works.', topic:'all'},
+    {term:'Integration testing', definition:'Testing interactions between combined components.', topic:'all'},
+    {term:'Statement coverage', definition:'Measuring whether each executable statement has run.', topic:'all'}
+  ]
+};
+const $ = id => document.getElementById(id);
+// Demo statements for the True or False game. Later, Django + RAG will create these
+// from the student's own uploaded course materials and attach real page/slide citations.
+const trueFalseSets = {
+  os: [
+    {statement:'A process is a program that is currently being executed.', answer:true, explanation:'Correct. A process is a program in execution.', topic:'Processes'},
+    {statement:'The Process ID (PID) is used to uniquely identify a process.', answer:true, explanation:'Correct. The operating system assigns a PID to identify each process.', topic:'Processes'},
+    {statement:'A context switch means deleting a process permanently.', answer:false, explanation:'A context switch saves one process state and loads another so the CPU can switch tasks.', topic:'Processes'},
+    {statement:'Virtual memory can use storage as an extension of RAM.', answer:true, explanation:'Correct. Virtual memory allows the system to use secondary storage to extend the apparent available memory.', topic:'Memory management'},
+    {statement:'Thrashing improves system performance by reducing paging.', answer:false, explanation:'Thrashing occurs when excessive paging leaves too little time for useful execution.', topic:'Memory management'},
+    {statement:'The scheduler selects a process to run.', answer:true, explanation:'Correct. The scheduler chooses which process gets CPU time.', topic:'Processes'},
+    {statement:'Deadlock occurs when processes wait indefinitely for resources.', answer:true, explanation:'Correct. In a deadlock, processes can remain waiting for resources held by one another.', topic:'Processes'},
+    {statement:'Paging divides memory into variable-sized pages.', answer:false, explanation:'Paging uses fixed-size pages; segmentation is commonly associated with variable-sized logical units.', topic:'Memory management'}
+  ],
+  db: [
+    {statement:'A primary key uniquely identifies each row in a table.', answer:true, explanation:'Correct. Primary-key values must identify rows uniquely.', topic:'Keys'},
+    {statement:'A foreign key can help establish a relationship between tables.', answer:true, explanation:'Correct. A foreign key references a key in another table or the same table.', topic:'Keys'},
+    {statement:'Normalization is mainly used to increase unnecessary data duplication.', answer:false, explanation:'Normalization organizes data to reduce redundancy and update anomalies.', topic:'Normalization'},
+    {statement:'SQL is used to define, query, and manipulate relational data.', answer:true, explanation:'Correct. SQL supports operations such as creating tables, querying data, and updating records.', topic:'SQL'},
+    {statement:'A transaction is a logical unit of database work.', answer:true, explanation:'Correct. A transaction groups database operations into one logical unit.', topic:'Transactions'},
+    {statement:'Referential integrity allows foreign keys to point to nonexistent rows without restriction.', answer:false, explanation:'Referential integrity keeps foreign-key references valid.', topic:'Integrity'}
+  ],
+  se: [
+    {statement:'Unit testing checks an individual component or module in isolation.', answer:true, explanation:'Correct. Unit tests focus on a small, individual unit of software.', topic:'Testing'},
+    {statement:'Branch coverage checks whether each decision outcome has been executed.', answer:true, explanation:'Correct. Branch coverage considers decision outcomes such as true and false.', topic:'Testing'},
+    {statement:'A test driver calls a lower-level module during testing.', answer:true, explanation:'Correct. A driver acts as a calling component when the higher-level module is unavailable.', topic:'Integration testing'},
+    {statement:'The Singleton pattern is designed to ensure a class always has many instances.', answer:false, explanation:'Singleton restricts a class to one instance and provides a way to access it.', topic:'Design patterns'},
+    {statement:'Regression testing checks whether changes have broken existing behavior.', answer:true, explanation:'Correct. Regression tests help verify that previously working behavior still works after changes.', topic:'Testing'},
+    {statement:'Statement coverage measures whether each executable statement has run.', answer:true, explanation:'Correct. Statement coverage measures execution of executable statements.', topic:'Testing'}
+  ]
+};
+let currentGameMode = 'match';
+let tfDeck = [], tfIndex = 0, tfCorrect = 0, tfAnswered = false;
+function selectGameMode(mode){
+  currentGameMode = mode;
+  $('setupHeading').textContent = mode === 'match' ? 'Set up your Match game' : 'Set up your True or False game';
+  $('setupPill').textContent = mode === 'match' ? '🧠 Recall practice' : '✓ Quick concept check';
+  $('startGame').textContent = mode === 'match' ? 'Start matching →' : 'Start True or False →';
+  $('chooseMatch').classList.toggle('secondary', mode !== 'match');
+  $('chooseTrueFalse').classList.toggle('secondary', mode !== 'truefalse');
+  $('chooseMatch').parentElement.classList.toggle('active-game', mode === 'match');
+  $('chooseTrueFalse').parentElement.classList.toggle('active-game', mode === 'truefalse');
+  $('setupArea').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function startTrueFalseGame(){
+  stopTimer();
+  $('completePanel').querySelector('h2').textContent='Round complete!';
+  const course = $('courseSelect').value;
+  const count = Math.min(Number($('pairCount').value), trueFalseSets[course].length);
+  tfDeck = shuffle(trueFalseSets[course]).slice(0,count);
+  tfIndex = 0; tfCorrect = 0; tfAnswered = false; seconds = 0;
+  $('setupArea').style.display='none'; $('playArea').style.display='block';
+  $('matchBoard').style.display='none'; $('trueFalseBoard').style.display='block';
+  $('completePanel').style.display='none'; $('tfExplanation').style.display='none'; $('tfNext').style.display='none';
+  $('gameTitle').textContent='True or False'; $('gameSubtitle').textContent=$('courseSelect').selectedOptions[0].text+' · Check each statement';
+  $('pairStat').parentElement.innerHTML='Question <strong id="pairStat">0/'+tfDeck.length+'</strong>';
+  $('movesStat').parentElement.innerHTML='Correct <strong id="movesStat">0</strong>';
+  $('timerStat').style.display='none'; $('progressFill').style.width='0%';
+  $('feedback').className='feedback'; $('feedback').textContent='Read the statement and choose True or False.';
+  showTrueFalseQuestion(); $('playArea').scrollIntoView({behavior:'smooth',block:'start'});
+}
+function showTrueFalseQuestion(){
+  const q=tfDeck[tfIndex]; tfAnswered=false;
+  $('tfTopic').textContent=q.topic; $('tfStatement').textContent=q.statement;
+  $('tfExplanation').style.display='none'; $('tfNext').style.display='none';
+  $('tfTrue').disabled=false; $('tfFalse').disabled=false;
+  $('pairStat').textContent=(tfIndex+1)+'/'+tfDeck.length;
+  $('progressFill').style.width=(tfIndex/tfDeck.length*100)+'%';
+}
+function answerTrueFalse(answer){
+  if(tfAnswered) return; tfAnswered=true;
+  const q=tfDeck[tfIndex], correct=answer===q.answer;
+  if(correct) tfCorrect++;
+  $('movesStat').textContent=tfCorrect;
+  $('tfTrue').disabled=true; $('tfFalse').disabled=true;
+  $('tfExplanation').style.display='block';
+  $('tfExplanation').innerHTML='<strong>'+(correct?'Correct!':'Not quite.')+'</strong> '+q.explanation;
+  $('feedback').className='feedback '+(correct?'good':'bad');
+  $('feedback').textContent=correct?'Nice work — keep going!':'Review the explanation, then continue.';
+  $('progressFill').style.width=((tfIndex+1)/tfDeck.length*100)+'%';
+  $('tfNext').style.display='block'; $('tfNext').textContent=tfIndex===tfDeck.length-1?'See results →':'Next statement →';
+}
+function nextTrueFalse(){
+  if(tfIndex<tfDeck.length-1){tfIndex++;showTrueFalseQuestion();$('feedback').className='feedback';$('feedback').textContent='Choose True or False.';}
+  else{
+    $('trueFalseBoard').style.display='none'; $('completePanel').style.display='block';
+    $('completePanel').querySelector('h2').textContent='Round complete!';
+    $('resultText').textContent='You answered '+tfCorrect+' out of '+tfDeck.length+' statements correctly ('+Math.round(tfCorrect/tfDeck.length*100)+'%). Keep practising to strengthen your understanding.';
+    $('feedback').className='feedback'; $('feedback').textContent='Demo score only. Course-grounded statements and real citations will be connected through Django + RAG later.';
+    $('playAgain').textContent='Play again'; $('progressFill').style.width='100%';
+  }
+}
+
+let deck=[], selected=null, matched=0, moves=0, seconds=0, interval=null, locked=false, started=false;
+function shuffle(items){const a=[...items];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function formatTime(n){return `${Math.floor(n/60)}:${String(n%60).padStart(2,'0')}`;}
+function stopTimer(){if(interval){clearInterval(interval);interval=null;}}
+function startTimer(){stopTimer();if($('modeSelect').value==='timed'){interval=setInterval(()=>{seconds++;$('timeStat').textContent=formatTime(seconds);if(seconds>=120&&matched<deck.length){stopTimer();$('feedback').textContent='Time is up! Restart to try again.';$('feedback').className='feedback bad';$('matchBoard').querySelectorAll('button').forEach(b=>b.disabled=true);}},1000);}}
+function makeDeck(){const course=$('courseSelect').value,topic=$('topicSelect').value,count=Number($('pairCount').value);let available=demoSets[course].filter(x=>topic==='all'||x.topic===topic);if(available.length<count){available=demoSets[course];$('feedback').textContent='There are not enough demo pairs for this topic yet, so mixed concepts are shown.';}return shuffle(available).slice(0,count);}
+function startGame(){if(currentGameMode==='truefalse'){startTrueFalseGame();return;}$('completePanel').querySelector('h2').textContent='All pairs matched!';$('trueFalseBoard').style.display='none';$('matchBoard').style.display='grid';$('timerStat').style.display='';$('pairStat').parentElement.innerHTML='Pairs <strong id="pairStat">0/6</strong>';$('movesStat').parentElement.innerHTML='Moves <strong id="movesStat">0</strong>';deck=makeDeck();selected=null;matched=0;moves=0;seconds=0;locked=false;started=true;$('setupArea').style.display='none';$('playArea').style.display='block';$('completePanel').style.display='none';$('matchBoard').style.display='grid';$('timeStat').textContent='0:00';$('movesStat').textContent='0';$('pairStat').textContent=`0/${deck.length}`;$('progressFill').style.width='0%';$('feedback').className='feedback';$('feedback').textContent='Select a concept card, then select its definition.';$('gameSubtitle').textContent=$('courseSelect').selectedOptions[0].text+' · '+$('topicSelect').selectedOptions[0].text;renderCards();startTimer();$('playArea').scrollIntoView({behavior:'smooth',block:'start'});}
+function renderCards(){const items=shuffle([...deck.map((p,i)=>({id:i,side:'term',text:p.term})),...deck.map((p,i)=>({id:i,side:'definition',text:p.definition}))]);$('matchBoard').innerHTML='';items.forEach(item=>{const b=document.createElement('button');b.className='match-card';b.type='button';b.dataset.id=item.id;b.dataset.side=item.side;b.innerHTML=`<span class="kind">${item.side==='term'?'Concept':'Definition'}</span><span>${item.text}</span>`;b.addEventListener('click',()=>chooseCard(b));$('matchBoard').appendChild(b);});}
+function chooseCard(card){if(locked||card.classList.contains('matched')||card===selected)return;if(!selected){selected=card;card.classList.add('selected');$('feedback').className='feedback';$('feedback').textContent=card.dataset.side==='term'?'Now choose its definition.':'Now choose the matching concept.';return;}moves++;$('movesStat').textContent=moves;const first=selected;card.classList.add('selected');if(first.dataset.id===card.dataset.id&&first.dataset.side!==card.dataset.side){first.classList.remove('selected');card.classList.remove('selected');first.classList.add('matched');card.classList.add('matched');first.disabled=true;card.disabled=true;matched++;$('pairStat').textContent=`${matched}/${deck.length}`;$('progressFill').style.width=`${matched/deck.length*100}%`;$('feedback').className='feedback good';$('feedback').textContent='Correct match! Keep going.';selected=null;if(matched===deck.length)finishGame();}else{locked=true;$('feedback').className='feedback bad';$('feedback').textContent='Not a match. Try to remember the concept and definition.';setTimeout(()=>{first.classList.remove('selected');card.classList.remove('selected');selected=null;locked=false;},700);}}
+function finishGame(){stopTimer();$('matchBoard').style.display='none';$('completePanel').style.display='block';const accuracy=Math.round(deck.length/(moves||1)*100);$('resultText').textContent=`You matched ${matched} pairs in ${moves} moves${$('modeSelect').value==='timed'?' and '+formatTime(seconds):''}. Keep practising to strengthen your recall!`;$('feedback').textContent=`Accuracy score: ${accuracy}% (demo calculation based on moves).`;}
+function backToSetup(){stopTimer();$('playArea').style.display='none';$('setupArea').style.display='grid';$('trueFalseBoard').style.display='none';$('matchBoard').style.display='grid';$('timerStat').style.display='';$('pairStat').parentElement.innerHTML='Pairs <strong id="pairStat">0/6</strong>';$('movesStat').parentElement.innerHTML='Moves <strong id="movesStat">0</strong>';selectGameMode(currentGameMode);}
+$('chooseMatch').addEventListener('click',()=>selectGameMode('match'));$('chooseTrueFalse').addEventListener('click',()=>selectGameMode('truefalse'));$('tfTrue').addEventListener('click',()=>answerTrueFalse(true));$('tfFalse').addEventListener('click',()=>answerTrueFalse(false));$('tfNext').addEventListener('click',nextTrueFalse);$('startGame').addEventListener('click',startGame);$('restartGame').addEventListener('click',startGame);$('playAgain').addEventListener('click',startGame);$('changeSetup').addEventListener('click',backToSetup);$('backSetup').addEventListener('click',backToSetup);
+$('courseSelect').addEventListener('change',()=>{const isOS=$('courseSelect').value==='os';$('topicSelect').innerHTML=isOS?'<option value="all">Mixed concepts</option><option value="process">Processes</option><option value="memory">Memory management</option>':'<option value="all">All concepts</option>';});
+</script>
+</body>
+</html>

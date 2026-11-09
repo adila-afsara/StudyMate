@@ -1,0 +1,45 @@
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+.venv/
+env/
+
+# Environment variables and API keys
+.env
+.env.*
+!.env.example
+secrets.json
+credentials.json
+
+# Django local files
+*.log
+staticfiles/
+
+# Database files (SQLite, if used)
+db.sqlite3
+db.sqlite3-journal
+
+# Uploaded PDFs and media
+media/
+
+# FAISS vector indexes
+faiss_indexes/
+*.faiss
+
+# IDE settings
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python caches
+.pytest_cache/
+.mypy_cache/
+.coverage

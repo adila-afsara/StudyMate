@@ -1,0 +1,1300 @@
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+  <title>
+   Flashcards — StudyMate
+  </title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+  <style>
+   :root {
+    --bg:#F6F5FA;
+    --card:#fff;
+    --p:#6D4AE8;
+    --pd:#5636C9;
+    --pl:#F0ECFD;
+    --line:#E7E4F0;
+    --text:#17151F;
+    --muted:#6C6880;
+    --on:#fff;
+    --ok:#1F8A5B;
+    --okl:#E6F5EE;
+    --bad:#D6455D;
+    --badl:#FDEBEE;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px)
+}
+@media (prefers-color-scheme:dark) {
+    :root:not([data-theme="light"]) {
+        --bg:#100E17;
+        --card:#191624;
+        --p:#9B82FF;
+        --pd:#B9A8FF;
+        --pl:#252038;
+        --line:#2C2740;
+        --text:#EEEBF7;
+        --muted:#9A94AE;
+        --on:#14101F;
+        --okl:#17332A;
+        --badl:#3A1D25
+    }
+}
+:root[data-theme="dark"] {
+    --bg:#100E17;
+    --card:#191624;
+    --p:#9B82FF;
+    --pd:#B9A8FF;
+    --pl:#252038;
+    --line:#2C2740;
+    --text:#EEEBF7;
+    --muted:#9A94AE;
+    --on:#14101F;
+    --okl:#17332A;
+    --badl:#3A1D25
+}
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box
+}
+html {
+    scroll-padding-top:env(safe-area-inset-top,0px)
+}
+body {
+    font-family:'Inter',system-ui,sans-serif;
+    font-size:15px;
+    line-height:1.55;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    -webkit-font-smoothing:antialiased
+}
+h1,h2,h3 {
+    font-weight:700;
+    letter-spacing:-.02em;
+    line-height:1.2
+}
+button {
+    font-family:inherit;
+    cursor:pointer
+}
+:focus-visible {
+    outline:3px solid var(--p);
+    outline-offset:2px
+}
+.hide {
+    display:none!important
+}
+label {
+    display:block;
+    font-size:13px;
+    font-weight:600;
+    margin:14px 0 6px
+}
+input,select {
+    width:100%;
+    padding:11px 14px;
+    border:1px solid var(--line);
+    border-radius:10px;
+    font:inherit;
+    font-size:14px;
+    background:var(--card);
+    color:var(--text)
+}
+input:focus,select:focus {
+    border-color:var(--p);
+    outline:none;
+    box-shadow:0 0 0 3px var(--pl)
+}
+.btn {
+    display:inline-block;
+    background:var(--p);
+    color:var(--on);
+    border:0;
+    border-radius:10px;
+    padding:11px 18px;
+    font-weight:600;
+    font-size:14px;
+    transition:background .15s
+}
+.btn:hover {
+    background:var(--pd);
+    color:var(--on)
+}
+.btn.full {
+    width:100%;
+    margin-top:20px
+}
+.btn.ghost {
+    background:var(--pl);
+    color:var(--pd)
+}
+.btn.ghost:hover {
+    background:var(--line);
+    color:var(--pd)
+}
+/* auth */
+#login {
+    position:fixed;
+    inset:0;
+    z-index:50;
+    background:var(--card);
+    display:flex
+}
+.lp {
+    flex:1;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:40px
+}
+.logo {
+    text-align:center;
+    margin-bottom:28px
+}
+.logo i {
+    width:52px;
+    height:52px;
+    border-radius:15px;
+    background:var(--p);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:26px;
+    font-style:normal;
+    margin:0 auto 12px
+}
+.logo b {
+    font-size:22px;
+    letter-spacing:-.02em;
+    display:block
+}
+.logo p {
+    font-size:13px;
+    color:var(--muted)
+}
+.fbox {
+    width:100%;
+    max-width:380px
+}
+.fbox h2 {
+    font-size:26px;
+    margin-bottom:4px
+}
+.fbox>p {
+    color:var(--muted);
+    font-size:14px;
+    margin-bottom:8px
+}
+.rp {
+    flex:1;
+    background:var(--pl);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:48px;
+    text-align:center
+}
+.rp .big {
+    font-size:64px
+}
+.rp h2 {
+    font-size:28px;
+    margin:12px 0
+}
+.rp ul {
+    list-style:none;
+    max-width:320px;
+    margin:24px auto 0;
+    text-align:left;
+    display:grid;
+    gap:10px
+}
+.rp li {
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:12px 14px;
+    font-size:14px
+}
+/* site header + page */
+.sl {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:18px;
+    font-weight:700;
+    letter-spacing:-.02em
+}
+.sl i {
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    background:var(--p);
+    display:grid;
+    place-items:center;
+    font-size:18px;
+    font-style:normal
+}
+aside {
+    position:sticky;
+    top:0;
+    z-index:10;
+    display:flex;
+    align-items:center;
+    gap:28px;
+    height:66px;
+    padding:0 max(5vw,20px);
+    background:var(--card);
+    border-bottom:1px solid var(--line)
+}
+aside nav {
+    flex:1;
+    display:flex;
+    gap:4px
+}
+nav button {
+    display:flex;
+    align-items:center;
+    gap:6px;
+    width:auto;
+    margin:0;
+    padding:8px 14px;
+    border:0;
+    border-radius:99px;
+    background:none;
+    color:var(--muted);
+    font-size:14px;
+    font-weight:500;
+    white-space:nowrap
+}
+nav button:hover {
+    background:var(--bg);
+    color:var(--text)
+}
+nav button.on {
+    background:var(--pl);
+    color:var(--pd);
+    font-weight:600
+}
+.su {
+    padding:0;
+    border:0;
+    font-size:13px;
+    display:flex;
+    gap:10px;
+    align-items:center;
+    white-space:nowrap
+}
+.su i {
+    font-style:normal;
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background:var(--pl);
+    display:grid;
+    place-items:center
+}
+main {
+    margin:0 auto;
+    padding:40px 5vw 56px;
+    max-width:1120px
+}
+main::after {
+    content:"🎓 StudyMate · Junior Design Project · Built with Retrieval-Augmented Generation";
+    display:block;
+    text-align:center;
+    font-size:13px;
+    color:var(--muted);
+    margin-top:56px;
+    padding-top:20px;
+    border-top:1px solid var(--line)
+}
+.top {
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    gap:12px;
+    flex-wrap:wrap;
+    margin-bottom:28px;
+    padding-bottom:20px;
+    border-bottom:1px solid var(--line)
+}
+.top h1 {
+    font-size:34px
+}
+.top p {
+    color:var(--muted);
+    font-size:14px;
+    margin-top:2px
+}
+.chip {
+    display:inline-flex;
+    gap:6px;
+    align-items:center;
+    background:var(--pl);
+    color:var(--pd);
+    border-radius:99px;
+    padding:6px 14px;
+    font-size:13px;
+    font-weight:600;
+    border:0
+}
+.grid {
+    display:grid;
+    gap:16px
+}
+.g4 {
+    grid-template-columns:repeat(auto-fit,minmax(170px,1fr))
+}
+.g2 {
+    grid-template-columns:repeat(auto-fit,minmax(300px,1fr))
+}
+.card {
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:20px
+}
+.card h3 {
+    font-size:16px;
+    margin-bottom:12px
+}
+.stat span {
+    font-size:13px;
+    color:var(--muted);
+    display:block
+}
+.stat b {
+    display:block;
+    font-size:30px;
+    letter-spacing:-.02em;
+    margin-top:4px
+}
+.mood {
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap
+}
+.mood button {
+    font-size:26px;
+    width:52px;
+    height:52px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    background:var(--card)
+}
+.mood button:hover {
+    border-color:var(--p)
+}
+.mood button.on {
+    border-color:var(--p);
+    background:var(--pl)
+}
+.mnote {
+    margin-top:12px;
+    font-size:13px;
+    color:var(--muted);
+    min-height:40px
+}
+.quote {
+    background:var(--pl);
+    border-radius:16px;
+    padding:22px
+}
+.quote q {
+    display:block;
+    font-size:18px;
+    font-weight:600;
+    line-height:1.45;
+    letter-spacing:-.01em;
+    margin:8px 0;
+    quotes:none
+}
+.quote small {
+    color:var(--muted);
+    font-weight:500
+}
+.cycle {
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+    align-items:center;
+    font-size:13px;
+    font-weight:600;
+    color:var(--muted)
+}
+.cycle span {
+    background:var(--pl);
+    color:var(--pd);
+    border-radius:99px;
+    padding:6px 14px
+}
+.cycle span.now {
+    background:var(--p);
+    color:var(--on)
+}
+.bar {
+    height:8px;
+    border-radius:99px;
+    background:var(--pl);
+    overflow:hidden;
+    margin:6px 0 14px
+}
+.bar div {
+    height:100%;
+    border-radius:99px;
+    background:var(--p)
+}
+.bar div.lo {
+    background:var(--bad)
+}
+.bar div.hi {
+    background:var(--ok)
+}
+.row {
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    gap:8px
+}
+.tag {
+    font-size:12px;
+    font-weight:600;
+    border-radius:99px;
+    padding:3px 10px;
+    background:var(--pl);
+    color:var(--pd)
+}
+.tag.ok {
+    background:var(--okl);
+    color:var(--ok)
+}
+.tag.bad {
+    background:var(--badl);
+    color:var(--bad)
+}
+.drop {
+    border:1.5px dashed var(--line);
+    border-radius:12px;
+    padding:16px;
+    text-align:center;
+    cursor:pointer;
+    font-size:13px;
+    color:var(--muted);
+    display:block;
+    margin-top:14px;
+    font-weight:500
+}
+.drop:hover,.drop:focus-within {
+    border-color:var(--p);
+    background:var(--pl);
+    color:var(--pd)
+}
+.drop input {
+    display:none
+}
+.file {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:8px;
+    border-top:1px solid var(--line);
+    padding:10px 0;
+    font-size:13px
+}
+.empty {
+    color:var(--muted);
+    font-size:13px;
+    padding:8px 0
+}
+.form {
+    display:grid;
+    grid-template-columns:1fr 2fr auto;
+    gap:12px;
+    align-items:end
+}
+.form label {
+    margin-top:0
+}
+/* chat */
+.chat {
+    display:flex;
+    flex-direction:column;
+    height:calc(100vh - 230px);
+    min-height:420px
+}
+.msgs {
+    flex:1;
+    overflow-y:auto;
+    display:flex;
+    flex-direction:column;
+    gap:12px
+}
+.m {
+    max-width:78%;
+    padding:11px 14px;
+    border-radius:14px;
+    font-size:14.5px
+}
+.m.u {
+    align-self:flex-end;
+    background:var(--p);
+    color:var(--on);
+    border-bottom-right-radius:4px
+}
+.m.b {
+    background:var(--bg);
+    border:1px solid var(--line);
+    border-bottom-left-radius:4px
+}
+.src {
+    display:inline-block;
+    margin:8px 6px 0 0;
+    font-size:12px;
+    font-weight:500;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:99px;
+    padding:3px 10px;
+    color:var(--pd)
+}
+.modes {
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-bottom:14px
+}
+.modes button {
+    border:1px solid var(--line);
+    background:var(--card);
+    color:var(--text);
+    border-radius:99px;
+    padding:7px 14px;
+    font-size:13px;
+    font-weight:500
+}
+.modes button.on {
+    background:var(--p);
+    border-color:var(--p);
+    color:var(--on)
+}
+.send {
+    display:flex;
+    gap:8px;
+    margin-top:14px
+}
+/* quiz */
+.opt {
+    display:block;
+    width:100%;
+    text-align:left;
+    border:1px solid var(--line);
+    background:var(--card);
+    color:var(--text);
+    border-radius:12px;
+    padding:13px 16px;
+    margin-top:8px;
+    font-size:14px
+}
+.opt:hover {
+    border-color:var(--p)
+}
+.opt.sel {
+    border-color:var(--p);
+    background:var(--pl)
+}
+.rev {
+    border-left:3px solid var(--bad);
+    background:var(--badl);
+    border-radius:8px;
+    padding:12px 14px;
+    margin-top:12px;
+    font-size:13px
+}
+.tb {
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:10px
+}
+.cta {
+    background:var(--pl);
+    border-radius:20px;
+    margin-bottom:48px
+}
+@media(max-width:820px) {
+    #login .rp {
+        display:none
+    }
+    aside {
+        gap:10px;
+        padding:0 12px;
+        height:58px;
+        overflow-x:auto
+    }
+    .sl {
+        font-size:0
+    }
+    .sl i {
+        font-size:18px
+    }
+    .su {
+        display:none
+    }
+    main {
+        padding:24px 16px 48px
+    }
+    .top h1 {
+        font-size:26px
+    }
+    .form {
+        grid-template-columns:1fr
+    }
+    .m {
+        max-width:92%
+    }
+}
+/* study buddy touches */
+.m.b {
+    margin-left:40px;
+    position:relative
+}
+.m.b::before {
+    content:"🦉";
+    position:absolute;
+    left:-40px;
+    top:0;
+    width:32px;
+    height:32px;
+    border-radius:50%;
+    background:var(--card);
+    border:1px solid var(--line);
+    display:grid;
+    place-items:center;
+    font-size:17px
+}
+.demo .m.b {
+    margin-left:40px
+}
+.goal .bar {
+    height:12px;
+    margin:8px 0 12px
+}
+.goal p {
+    font-size:14px;
+    color:var(--muted)
+}
+/* motivation banner */
+.banner {
+    display:flex;
+    align-items:center;
+    gap:26px;
+    background:var(--pl);
+    border:2px solid color-mix(in srgb,var(--p) 45%,var(--line));
+    border-radius:20px;
+    padding:22px 28px;
+    margin-bottom:24px
+}
+.banner .art {
+    position:relative;
+    flex:none;
+    width:104px;
+    height:104px;
+    border-radius:50%;
+    background:var(--card);
+    display:grid;
+    place-items:center;
+    font-size:58px
+}
+.banner .art i {
+    position:absolute;
+    font-style:normal;
+    font-size:20px
+}
+.banner .a1 {
+    top:-4px;
+    left:-6px
+}
+.banner .a2 {
+    top:0;
+    right:-8px
+}
+.banner .a3 {
+    bottom:2px;
+    left:-10px
+}
+.banner .a4 {
+    bottom:-2px;
+    right:-4px
+}
+.banner h2 {
+    font-size:22px;
+    color:var(--pd);
+    margin-bottom:4px
+}
+.banner p {
+    color:var(--muted);
+    font-size:14.5px
+}
+.banner .btn {
+    flex:none
+}
+@media(max-width:820px) {
+    .banner {
+        flex-direction:column;
+        text-align:center;
+        padding:22px 18px
+    }
+}
+.banner .art {
+    width:120px;
+    height:120px;
+    background:none;
+    border-radius:0;
+    display:block
+}
+.banner .art svg {
+    width:100%;
+    height:100%
+}
+/* user menu */
+.su {
+    position:relative
+}
+.ub {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:none;
+    border:0;
+    padding:4px 8px;
+    border-radius:12px;
+    color:var(--text);
+    text-align:left;
+    font-size:13px;
+    line-height:1.3
+}
+.ub:hover {
+    background:var(--bg)
+}
+.ub small {
+    color:var(--muted);
+    font-size:12px
+}
+.um {
+    position:fixed;
+    top:62px;
+    right:max(5vw,20px);
+    width:210px;
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:6px;
+    box-shadow:0 18px 40px -20px rgba(23,21,31,.45);
+    z-index:30
+}
+.um a,.um button {
+    display:block;
+    width:100%;
+    text-align:left;
+    padding:10px 12px;
+    border:0;
+    background:none;
+    border-radius:9px;
+    color:var(--text);
+    font-size:14px;
+    text-decoration:none
+}
+.um a:hover,.um button:hover {
+    background:var(--pl)
+}
+.um #lo {
+    color:var(--bad)
+}
+@media(max-width:820px) {
+    .su {
+        display:flex
+    }
+    .ub span,.ub b {
+        display:none
+    }
+    .um {
+        right:12px
+    }
+}
+textarea {
+    width:100%;
+    padding:12px 14px;
+    border:1px solid var(--line);
+    border-radius:12px;
+    font:inherit;
+    font-size:14px;
+    background:var(--card);
+    color:var(--text);
+    resize:vertical;
+    margin-top:10px
+}
+textarea:focus {
+    border-color:var(--p);
+    outline:none;
+    box-shadow:0 0 0 3px var(--pl)
+}
+/* flashcards */
+.fcard {
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:12px;
+    width:100%;
+    min-height:260px;
+    margin-top:18px;
+    padding:32px;
+    border:2px solid var(--line);
+    border-radius:22px;
+    background:var(--card);
+    color:var(--text);
+    font:inherit;
+    font-size:22px;
+    font-weight:600;
+    text-align:center;
+    letter-spacing:-.01em;
+    line-height:1.4
+}
+.fcard:hover {
+    border-color:var(--p)
+}
+.fcard.flip {
+    background:var(--pl);
+    border-color:var(--p)
+}
+.fcard small {
+    font-size:12px;
+    font-weight:600;
+    color:var(--muted);
+    text-transform:uppercase;
+    letter-spacing:.08em
+}
+.fcard em {
+    font-size:13px;
+    font-weight:400;
+    color:var(--muted);
+    font-style:normal
+}
+.fcbtns {
+    display:flex;
+    gap:12px;
+    justify-content:center;
+    margin-top:16px;
+    flex-wrap:wrap
+}
+.chipbtn {
+    margin-top:8px;
+    font:inherit;
+    font-size:12px;
+    font-weight:600;
+    background:var(--pl);
+    color:var(--pd);
+    border:0;
+    border-radius:99px;
+    padding:5px 12px
+}
+.chipbtn:hover {
+    background:var(--line)
+}
+  </style>
+ </head>
+ <body data-page="flashcards">
+  <aside>
+   <div class="sl">
+    <i>
+     🎓
+    </i>
+    StudyMate
+   </div>
+   <nav id="nav">
+    <button data-v="dash">
+     🏠 Dashboard
+    </button>
+    <button data-v="courses">
+     📚 My Courses
+    </button>
+    <button data-v="ask">
+     💬 Ask StudyMate
+    </button>
+    <button data-v="cards">
+     🃏 Flashcards
+    </button>
+    <button data-v="quiz">
+     📝 Practice &amp; Quiz
+    </button>
+    <button data-v="games">🎮 Games</button>
+    <button data-v="prog">
+     📈 My Progress
+    </button>
+   </nav>
+   <div class="su">
+    <i>
+     🧑‍🎓
+    </i>
+    <div>
+     <b>
+      Adila
+     </b>
+     <br/>
+     <span style="color:var(--muted)">
+      Junior, CSE
+     </span>
+    </div>
+   </div>
+  </aside>
+  <main>
+   <section id="v-cards">
+    <div class="top">
+     <div>
+      <h1>
+       🃏 Flashcards
+      </h1>
+      <p>
+       Turn your slides into cards, then flip through them until they stick.
+      </p>
+     </div>
+    </div>
+    <div id="fcHome">
+     <div class="card">
+      <h3>
+       ✨ Create a deck from your slides
+      </h3>
+      <div class="grid g2">
+       <div>
+        <label for="fcc">
+         Course
+        </label>
+        <select id="fcc">
+        </select>
+        <label for="fcfile">
+         File
+        </label>
+        <select id="fcfile">
+        </select>
+        <label for="fcr">
+         Slides or pages
+        </label>
+        <select id="fcr">
+         <option>
+          Whole file
+         </option>
+         <option>
+          Slides 1–10
+         </option>
+         <option>
+          Slides 11–20
+         </option>
+        </select>
+       </div>
+       <div>
+        <label for="fcn">
+         Number of cards
+        </label>
+        <select id="fcn">
+         <option>
+          5
+         </option>
+         <option selected="">
+          8
+         </option>
+         <option>
+          12
+         </option>
+        </select>
+        <label for="fcs">
+         Card style
+        </label>
+        <select id="fcs">
+         <option value="term">
+          Term → definition
+         </option>
+         <option value="q">
+          Question → answer
+         </option>
+         <option value="cloze">
+          Fill in the blank
+         </option>
+        </select>
+       </div>
+      </div>
+      <button class="btn full" id="fcg">
+       🃏 Generate flashcards
+      </button>
+      <p class="empty" id="fcm" style="margin-top:10px">
+      </p>
+      <p style="font-size:12px;color:var(--muted);margin-top:6px">
+       Demo note: cards here are samples. In the full system they are generated from the slides you choose.
+      </p>
+     </div>
+     <h2 style="font-size:20px;margin:28px 0 12px">
+      📚 My decks
+     </h2>
+     <div class="grid g2" id="fcd">
+     </div>
+    </div>
+    <div class="hide" id="fcStudy">
+    </div>
+   </section>
+  </main>
+  <script>
+   const PAGE = ({ dashboard: 'dash', chatbot: 'ask', progress: 'prog', flashcards: 'cards' })[document.body.dataset.page] || document.body.dataset.page;
+const NOOP = new Proxy({ classList: { add() { }, remove() { }, toggle() { } }, children: [], style: {} }, { set: () => true, get: (t, k) => k in t ? t[k] : () => { } });
+const $ = s => document.querySelector(s) || NOOP, $$ = s => [...document.querySelectorAll(s)];
+const KEY = 'studymate_state';
+const S0 = {    
+courses: [{ code: 'CSE 4101', name: 'Software Testing', files: [{ n: 'Lecture3_Coverage.pdf', c: 42 }, { n: 'Week5_Integration.pptx', c: 28 }] }, { code: 'CSE 3205', name: 'Database Systems', files: [] }],
+    topics: { 'Branch Coverage': 45, 'Unit Testing': 72, 'Integration Testing': 88 }, hist: [{ t: 'Integration Testing', s: 88, d: 'Mon' }, { t: 'Branch Coverage', s: 45, d: 'Sat' }], mood: null
+};
+const Q = [["Software Testing quotes", "x"]];
+const quotes = [["Small progress each day adds up to big results.", "Study tip"], ["It always seems impossible until it is done.", "Nelson Mandela"], ["You don't have to be great to start, but you have to start to be great.", "Zig Ziglar"], ["The expert in anything was once a beginner.", "Helen Hayes"], ["Mistakes are proof that you are trying.", "Unknown"]];
+let S; try { S = JSON.parse(localStorage.getItem(KEY)) } catch (e) { }
+S = S || S0;
+// Saves the current application data.
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)) } catch (e) { } }
+S.set = S.set || { name: 'Adila', email: 'adila@email.com', prog: 'Junior, CSE', mode: 'Simple', goal: 10, rem: 'Off', theme: 'system' };
+// Applies the selected appearance theme.
+function theme() { const t = S.set.theme; if (t === 'system') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', t) }
+theme();
+const first = () => S.set.name.split(' ')[0];
+let qi = 0;
+const moods = [["😄", "Amazing", "Great energy! Try a Hard quiz and beat your best score."], ["😊", "Good", "Nice. Review one topic, then take a short Medium quiz."], ["😐", "Okay", "Start easy: ask for a Simple explanation, then 3 easy questions."], ["😔", "Tired", "Go gentle. Skim a summary for 10 minutes, then rest. That counts!"], ["😤", "Stressed", "Breathe. Pick just one weak topic and do 3 easy questions. One step only."]];
+const MAP = {
+    dash: 'StudyMate_dashboard.html',
+    courses: 'StudyMate_courses.html',
+    ask: 'StudyMate_chatbot.html',
+    cards: 'StudyMate_flashcards.html',
+    quiz: 'StudyMate_quiz.html',
+    prog: 'StudyMate_progress.html'
+};
+// Navigates to the requested StudyMate page.
+function show(v) { location.href = MAP[v] }
+$$('#nav button').forEach(b => b.classList.toggle('on', b.dataset.v === PAGE));
+$('#nav').onclick = e => { const b = e.target.closest('button'); if (b) show(b.dataset.v) };
+$$('[data-go]').forEach(b => b.onclick = () => show(b.dataset.go));
+$('#go').onclick = () => { location.href = MAP.dash };
+// Helper function: bar().
+function bar(n, p) { return `<div class="row"><span>${n}</span><b>${p}%</b></div><div class="bar"><div class="${p < 60 ? 'lo' : p >= 80 ? 'hi' : ''}" style="width:${p}%"></div></div>` }
+// Helper function: dash().
+function dash() {
+    const ts = Object.entries(S.topics), avg = Math.round(S.hist.reduce((a, h) => a + h.s, 0) / S.hist.length), m = S.courses.reduce((a, c) => a + c.files.length, 0);
+    $('#stats').innerHTML = [['📝', S.hist.length, 'Quizzes taken'], ['⭐', avg + '%', 'Average score'], ['📚', S.courses.length, 'Courses'], ['📄', m, 'Materials uploaded']].map(x => `<div class="card stat"><span>${x[0]} ${x[2]}</span><b>${x[1]}</b></div>`).join('');
+    const g = Math.min(S.hist.length, S.set.goal); $('#gt').textContent = '🎯 Semester goal: ' + S.set.goal + ' quizzes'; $('#hi').textContent = 'Hi ' + first() + '! Ready to learn? ✨'; $('#goalv').textContent = g + ' / ' + S.set.goal; $('#goalb').style.width = g / S.set.goal * 100 + '%'; $('#goalm').textContent = g >= S.set.goal ? 'Goal reached! Time to set a new one. 🎉' : (S.set.goal - g) + ' more quiz' + (S.set.goal - g > 1 ? 'zes' : '') + ' to reach your goal. You can do it!';
+    const lo = ts.filter(t => t[1] < 60), hi = ts.filter(t => t[1] >= 80);
+    const n = S.hist.length, wk = [...ts].sort((a, b) => a[1] - b[1])[0];
+    $('#bn-t').textContent = avg >= 80 ? "You're doing amazing! Keep it up! 🎉" : avg >= 60 ? "Great progress! Keep going! 💪" : "Every quiz makes you stronger! 🌱";
+    $('#bn-m').textContent = `You've completed ${n} quiz${n > 1 ? 'zes' : ''} with an average of ${avg}%. Your progress report is ready${wk[1] < 60 ? ' — next, give ' + wk[0] + ' a little extra practice.' : '!'}`;
+    $('#strong').innerHTML = hi.map(t => bar(t[0], t[1])).join('') || '<p class="empty">Take a quiz to find your strengths.</p>';
+    $('#weak').innerHTML = lo.map(t => bar(t[0], t[1])).join('') || '<p class="empty">Nothing urgent. Keep it up! 🎉</p>';
+    const w = ts.sort((a, b) => a[1] - b[1])[0]; $('#nextStep').textContent = `Next step: review ${w[0]} (${w[1]}%), then take a short quiz on it.`;
+    $('#qt').textContent = '“' + quotes[qi][0] + '”'; $('#qa').textContent = '— ' + quotes[qi][1];
+}
+$('#qn').onclick = () => { qi = (qi + 1) % quotes.length; dash() };
+$('#mood').innerHTML = moods.map((m, i) => `<button title="${m[1]}" aria-label="${m[1]}" data-i="${i}">${m[0]}</button>`).join('');
+$('#mood').onclick = e => { const b = e.target.closest('button'); if (!b) return; $$('#mood button').forEach(x => x.classList.toggle('on', x === b)); const m = moods[b.dataset.i]; $('#mnote').innerHTML = `<b>Today's mood: ${m[1]} ${m[0]}</b><br/>${m[2]}` };
+// Builds and displays the saved course list.
+function rCourses() {    
+save();
+    $('#clist').innerHTML = S.courses.map((c, i) => `<div class="card"><div class="row"><h3>${c.code}</h3><span class="tag">${c.files.length} files</span></div><p style="font-size:14px;margin-bottom:6px">${c.name}</p>
+ ${c.files.map((f, j) => `<div class="file"><span>${/pdf$/i.test(f.n) ? '📕' : '📙'} ${f.n}</span><span style="display:flex;gap:8px;align-items:center">${f.c ? `<button class="btn ghost" data-fc="${i},${j}" style="padding:4px 10px;font-size:12px">🃏 Flashcards</button>` : ''}<span class="tag ${f.c ? 'ok' : ''}">${f.c ? '✅ Ready · ' + f.c + ' chunks' : '⏳ Processing…'}</span></span></div>`).join('') || '<p class="empty">No materials yet. Upload your first file below 👇</p>'}
+ <label class="drop">📤 Upload PDF, PPT or PPTX<input type="file" multiple accept=".pdf,.ppt,.pptx" data-i="${i}"/></label></div>`).join('')
+}
+$('#clist').onclick = e => { const b = e.target.closest('[data-fc]'); if (!b) return; const [c, f] = b.dataset.fc.split(',').map(Number); S.fc = { c, f }; save(); location.href = MAP.cards };
+$('#clist').onchange = e => { const i = e.target.dataset.i; if (i == null) return;[...e.target.files].forEach(f => { const o = { n: f.name, c: 0 }; S.courses[i].files.push(o); setTimeout(() => { o.c = 15 + Math.floor(Math.random() * 40); rCourses() }, 1400) }); rCourses() };
+$('#addc').onclick = () => { const c = $('#cc').value.trim(), n = $('#cn').value.trim(); if (!c || !n) { $('#cn').focus(); return } S.courses.push({ code: c, name: n, files: [] }); $('#cc').value = $('#cn').value = ''; rCourses() };
+// Fills course dropdowns and shows the initial chat greeting when needed.
+function rSel() { const o = S.courses.map(c => `<option>${c.code} — ${c.name}</option>`).join(''); $('#askc').innerHTML = o; $('#qc').innerHTML = o; if (!$('#msgs').children.length) add('b', 'Hi ' + first() + '! 👋 Ask me anything about your course. I only answer from your uploaded materials and I will show where each answer comes from.') }
+let mode = S.set.mode || 'Simple';
+$$('#modes button').forEach(b => b.classList.toggle('on', b.dataset.m === mode));
+$('#modes').onclick = e => { const b = e.target.closest('button'); if (!b) return; mode = b.dataset.m; $$('#modes button').forEach(x => x.classList.toggle('on', x === b)) };
+// Adds an item to the current list or interface.
+function add(w, h) { const d = document.createElement('div'); d.className = 'm ' + w; d.innerHTML = h; $('#msgs').append(d); d.scrollIntoView({ block: 'end' }); return d }
+const ans = { Simple: 'Branch coverage checks that every decision in your code (like an if) has been taken both ways, true and false, at least once.', Normal: 'Branch coverage measures the percentage of branches (true/false outcomes of each decision) executed by your tests. 100% means every branch ran at least once.', Example: 'For <code>if (x&gt;0)</code>, one test with x=5 covers the true branch. You also need x=-1 to cover the false branch. Both together give 100% branch coverage.', Exam: '<b>Definition:</b> % of decision outcomes exercised by tests. <b>Formula:</b> branches executed ÷ total branches × 100. <b>Note:</b> it subsumes statement coverage.' };
+// Handles a question submitted to the chatbot.
+function ask() {    
+const q = $('#q').value.trim(); if (!q) return; add('u', q.replace(/</g, '&lt;')); $('#q').value = ''; const t = add('b', '🔎 Searching your materials…');
+    setTimeout(() => { t.innerHTML = /branch|coverage|test/i.test(q) ? `${ans[mode]}<br/><span class="src">📄 Lecture3_Coverage.pdf · p.12</span><span class="src">📙 Week5_Integration.pptx · slide 7</span><br/><button class="chipbtn" data-fcask="1">🃏 Turn this into flashcards</button>` : `I couldn't find that in your materials. Try uploading the related slides, or rephrase using a term from your lecture. 📎` }, 900)
+}
+$('#msgs').onclick = e => { if (e.target.closest('[data-fcask]')) { S.fc = { c: 0, f: 0 }; save(); location.href = MAP.cards } };
+$('#sendb').onclick = ask; $('#q').onkeydown = e => { if (e.key === 'Enter') ask() };
+const BANK = [
+    { t: 'Branch Coverage', type: 'mcq', q: 'What does 100% branch coverage guarantee?', o: ['Every line ran', 'Every decision was true and false at least once', 'No bugs remain', 'All paths were run'], a: 1, src: 'Lecture3_Coverage.pdf · p.12' },
+    { t: 'Unit Testing', type: 'mcq', q: 'A unit test should mainly test…', o: ['The whole system', 'One small piece in isolation', 'Only the database', 'The user interface'], a: 1, src: 'Lecture2_Unit.pdf · p.5' },
+    { t: 'Integration Testing', type: 'mcq', q: 'Integration testing mainly finds problems in…', o: ['Typos', 'Interactions between modules', 'Colour choices', 'Variable names'], a: 1, src: 'Week5_Integration.pptx · slide 7' },
+    { t: 'Branch Coverage', type: 'mcq', q: 'For one if-else, the minimum tests for full branch coverage is…', o: ['1', '2', '3', '4'], a: 1, src: 'Lecture3_Coverage.pdf · p.14' },
+    { t: 'Unit Testing', type: 'mcq', q: 'Which is a good unit-test habit?', o: ['Depend on test order', 'Keep tests independent', 'Use production data', 'Skip assertions'], a: 1, src: 'Lecture2_Unit.pdf · p.9' },
+    { t: 'Branch Coverage', type: 'tf', q: '100% branch coverage guarantees that every possible path has been tested.', o: ['True', 'False'], a: 1, why: 'Branch coverage checks decision outcomes, not every combination of paths.', src: 'Lecture3_Coverage.pdf · p.13' },
+    { t: 'Branch Coverage', type: 'tf', q: 'A single if-else needs at least two tests for full branch coverage.', o: ['True', 'False'], a: 0, why: 'One test for the true branch and one for the false branch.', src: 'Lecture3_Coverage.pdf · p.14' },
+    { t: 'Unit Testing', type: 'tf', q: 'A unit test should check one small piece of code in isolation.', o: ['True', 'False'], a: 0, why: 'Isolation makes failures easy to locate.', src: 'Lecture2_Unit.pdf · p.5' },
+    { t: 'Unit Testing', type: 'tf', q: 'Good unit tests should depend on the order they run in.', o: ['True', 'False'], a: 1, why: 'Tests should be independent of each other.', src: 'Lecture2_Unit.pdf · p.9' },
+    { t: 'Integration Testing', type: 'tf', q: 'Integration testing mainly checks how modules work together.', o: ['True', 'False'], a: 0, why: 'It targets interfaces and data flow between modules.', src: 'Week5_Integration.pptx · slide 7' },
+    { t: 'Integration Testing', type: 'tf', q: 'Integration testing is normally done before any unit testing.', o: ['True', 'False'], a: 1, why: 'Units are tested first, then combined.', src: 'Week5_Integration.pptx · slide 4' },
+    { t: 'Branch Coverage', type: 'sa', q: 'In one sentence, what is branch coverage?', ref: 'The percentage of decision outcomes (true and false branches) that the tests execute.', kw: ['decision', 'branch', 'true', 'false', 'percent', 'outcome'], min: 2, src: 'Lecture3_Coverage.pdf · p.12' },
+    { t: 'Branch Coverage', type: 'sa', q: 'Why do we need both a true and a false test for an if statement?', ref: 'So that each outcome of the decision is executed at least once.', kw: ['outcome', 'both', 'each', 'execut', 'decision', 'branch'], min: 2, src: 'Lecture3_Coverage.pdf · p.14' },
+    { t: 'Unit Testing', type: 'sa', q: 'What does a unit test check?', ref: 'One small piece of code, such as a function, in isolation.', kw: ['small', 'unit', 'function', 'isolat', 'one', 'single'], min: 2, src: 'Lecture2_Unit.pdf · p.5' },
+    { t: 'Unit Testing', type: 'sa', q: 'Name one good habit for writing unit tests.', ref: 'Keep tests independent, fast and repeatable.', kw: ['independent', 'fast', 'repeat', 'assert', 'isolat'], min: 1, src: 'Lecture2_Unit.pdf · p.9' },
+    { t: 'Integration Testing', type: 'sa', q: 'What kind of problems does integration testing find?', ref: 'Problems in how modules interact, such as wrong data or interface mismatches.', kw: ['interact', 'interface', 'module', 'together', 'data'], min: 2, src: 'Week5_Integration.pptx · slide 7' },
+    { t: 'Integration Testing', type: 'sa', q: 'Give one example of an integration testing approach.', ref: 'Big-bang, top-down, bottom-up or sandwich integration.', kw: ['big', 'top', 'bottom', 'sandwich', 'incremental'], min: 1, src: 'Week5_Integration.pptx · slide 9' }];
+const TL = { mcq: 'MCQ', tf: 'True / False', sa: 'Short answer' };
+const shuf = x => { if (x.type !== 'mcq') return { ...x }; const ix = [...x.o.keys()].sort(() => Math.random() - .5); return { ...x, o: ix.map(i => x.o[i]), a: ix.indexOf(x.a) } };
+const okq = (x, v) => x.type === 'sa' ? x.kw.filter(k => String(v || '').toLowerCase().includes(k)).length >= x.min : v === x.a;
+const mmss = s => String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
+// Helper function: clk().
+function clk() { const c = document.querySelector('#clock'); if (!c || !run || !run.end) return; const r = Math.max(0, Math.ceil((run.end - Date.now()) / 1000)); c.textContent = '⏱ ' + mmss(r) + ' left'; c.classList.toggle('bad', r <= 60) }
+// Helper function: tick().
+function tick() { if (!run || !run.end || run.done) return; clk(); if (Date.now() >= run.end) { const ta = document.querySelector('#sa'); if (ta && run.a.length === run.i) run.a[run.i] = ta.value.trim(); fin(true) } }
+let run;
+$('#qgo').onclick = () => {    
+const tp = $('#qtp').value, ty = $('#qty').value, n = +$('#qn2').value;
+    let l = BANK.filter(b => (tp === 'All topics' || b.t === tp) && (ty === 'mixed' || b.type === ty));
+    if (ty === 'mixed') { const g = ['mcq', 'tf', 'sa'].map(k => l.filter(b => b.type === k)), o = []; for (let i = 0; g.some(a => i < a.length); i++)g.forEach(a => { if (a[i]) o.push(a[i]) }); l = o }
+    if (!l.length) l = BANK;
+    run = { l: l.slice(0, n).map(shuf), i: 0, a: [], start: Date.now() }; const lim = { '2 min': 120, '5 min': 300, '10 min': 600 }[$('#qtm').value] || 0; if (lim) { run.end = run.start + lim * 1000; run.tid = setInterval(tick, 500) } $('#qsetup').classList.add('hide'); $('#qres').classList.add('hide'); rq()
+};
+// Helper function: rq().
+function rq() {    
+const c = $('#qrun'), x = run.l[run.i]; c.classList.remove('hide');
+    const body = x.type === 'sa' ? `<textarea id="sa" rows="4" placeholder="Type your answer in your own words…" aria-label="Your answer"></textarea><div class="tb" style="margin-top:12px"><span class="empty">Auto-marked by keywords, so it may not be perfect.</span><button class="btn" id="sub">Next →</button></div>` : x.o.map((o, i) => `<button class="opt" data-i="${i}">${x.type === 'tf' ? '' : 'ABCD'[i] + '. '}${o}</button>`).join('');
+    c.innerHTML = `<div class="tb"><span class="tag">${x.t}</span>${run.end ? '<span class="tag" id="clock"></span>' : ''}<span class="tag">${TL[x.type]} · ${run.i + 1} of ${run.l.length}</span></div><div class="bar"><div style="width:${run.i / run.l.length * 100}%"></div></div><h3>${x.q}</h3>${body}`;
+    if (run.end) clk(); if (x.type === 'sa') $('#sa').focus()
+}
+const adv = v => { run.a.push(v); run.i++; run.i < run.l.length ? rq() : fin() };
+$('#qrun').onclick = e => {    
+const b = e.target.closest('.opt');
+    if (b) { if (run.a.length > run.i) return; run.a.push(+b.dataset.i); b.classList.add('sel'); setTimeout(() => { if (run.done) return; run.i++; run.i < run.l.length ? rq() : fin() }, 350); return }
+    if (e.target.closest('#sub')) adv($('#sa').value.trim())
+};
+// Finishes the quiz attempt and calculates the result.
+function fin(late) {    
+if (run.done) return; run.done = true; clearInterval(run.tid); run.end = 0; setTimeout(save, 0); $('#qrun').classList.add('hide');
+    const r = run.l.map((x, i) => ({ x, pick: run.a[i], ok: okq(x, run.a[i]) })), sc = Math.round(r.filter(z => z.ok).length / r.length * 100), hasSA = run.l.some(x => x.type === 'sa');
+    const tp = $('#qtp').value; S.hist.unshift({ t: tp, s: sc, d: 'Today' }); r.forEach(z => { S.topics[z.x.t] = Math.round((S.topics[z.x.t] + (z.ok ? 100 : 0)) / 2) });
+    const wrong = z => z.x.type === 'sa' ? `Your answer: ${esc(z.pick || '(left blank)')}<br/>Model answer: ${z.x.ref}` : `Your answer: ${z.pick == null ? '(not answered)' : z.x.o[z.pick]}<br/>Correct: ${z.x.o[z.x.a]}${z.x.why ? '<br/>Why: ' + z.x.why : ''}`;
+    const kinds = [...new Set(run.l.map(x => x.type))].map(k => { const q = r.filter(z => z.x.type === k); return `<span class="tag">${TL[k]}: ${q.filter(z => z.ok).length}/${q.length}</span>` }).join('');
+    $('#qres').classList.remove('hide'); $('#qres').innerHTML = `<div class="card"><h3>${sc >= 80 ? '🎉 Excellent work!' : sc >= 50 ? '👍 Good effort!' : '🌱 Good start, let’s improve'}</h3><div class="stat"><b>${sc}%</b><span>${r.filter(z => z.ok).length} of ${r.length} correct</span></div>
+ ${late ? '<p class="empty" style="color:var(--bad)">⏰ Time is up! Unanswered questions were marked wrong.</p>' : ''}
+ <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><span class="tag">⏱ ${mmss(Math.round((Date.now() - run.start) / 1000))} used</span>${kinds}</div>
+ ${r.filter(z => !z.ok).map(z => `<div class="rev"><b>${z.x.q}</b><br/>${wrong(z)}<br/><span class="src">📄 ${z.x.src}</span></div>`).join('') || '<p class="empty">No mistakes. Amazing! 🌟</p>'}
+ ${hasSA ? '<p class="empty">Short answers are auto-marked by keywords. Compare yours with the model answer yourself.</p>' : ''}
+ <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap"><button class="btn" id="again">🔁 Practice similar questions</button><button class="btn ghost" id="seep">📈 See my progress</button></div></div>`;
+    $('#again').onclick = () => { $('#qres').classList.add('hide'); $('#qsetup').classList.remove('hide') }; $('#seep').onclick = () => show('prog')
+}
+// Updates the progress information shown on the page.
+function prog() {    
+const ts = Object.entries(S.topics).sort((a, b) => a[1] - b[1]); $('#tacc').innerHTML = ts.map(t => bar(t[0], t[1])).join('');
+    const w = ts[0]; $('#plan').innerHTML = w[1] < 60 ? `<p style="font-size:14px;margin-bottom:10px"><b>${w[0]}</b> needs the most work (${w[1]}%).</p><ol style="padding-left:18px;font-size:14px;display:grid;gap:6px"><li>📖 Review the ${w[0]} slides</li><li>✍️ Solve 3 easy questions</li><li>📝 Attempt a medium quiz</li><li>🔍 Review your mistakes</li><li>🔁 Retry the quiz</li></ol><button class="btn" style="margin-top:14px" data-go="quiz" id="pp">Practice ${w[0]}</button>` : '<p style="font-size:14px">All topics are looking strong. Try a Hard quiz to stretch yourself! 🚀</p>';
+    const p = $('#pp'); if (p) p.onclick = () => { S.pick = w[0]; save(); show('quiz') };
+    $('#hist').innerHTML = S.hist.map(h => `<div class="file"><span>📝 ${h.t} <span style="color:var(--muted)">· ${h.d}</span></span><span class="tag ${h.s >= 70 ? 'ok' : h.s < 50 ? 'bad' : ''}">${h.s}%</span></div>`).join('')
+}
+
+
+const esc = t => String(t).replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+const su = document.querySelector('.su');
+if (su) {    
+su.innerHTML = `<button class="ub" aria-haspopup="true" aria-expanded="false"><i>🧑‍🎓</i><span>${esc(S.set.name)}<br/><small>${esc(S.set.prog)}</small></span><b>▾</b></button>
+ <div class="um hide" role="menu"><a href="StudyMate_settings.html">⚙️ Settings</a><a href="StudyMate_progress.html">📈 My progress</a><button id="lo">🚪 Log out</button></div>`;
+    const ub = su.querySelector('.ub'), um = su.querySelector('.um');
+    const tog = o => { um.classList.toggle('hide', !o); ub.setAttribute('aria-expanded', o) };
+    ub.onclick = e => { e.stopPropagation(); tog(um.classList.contains('hide')) };
+    document.addEventListener('click', e => { if (!um.contains(e.target)) tog(false) });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') tog(false) });
+    su.querySelector('#lo').onclick = () => { location.href = 'StudyMate_login.html' }
+}
+// Loads and handles the settings controls.
+function settings() {    
+const s = S.set; $('#sn').value = s.name; $('#se').value = s.email; $('#sp').value = s.prog; $('#sm').value = s.mode; $('#sg').value = s.goal; $('#sr').value = s.rem || 'Off';
+    const mk = () => $$('#th button').forEach(b => b.classList.toggle('on', b.dataset.t === s.theme)); mk();
+    $('#th').onclick = e => { const b = e.target.closest('button'); if (!b) return; s.theme = b.dataset.t; theme(); save(); mk() };
+    $('#sv').onclick = () => { Object.assign(s, { name: $('#sn').value.trim() || 'Student', email: $('#se').value.trim(), prog: $('#sp').value.trim(), mode: $('#sm').value, goal: +$('#sg').value, rem: $('#sr').value }); save(); $('#sm2').classList.remove('hide'); setTimeout(() => location.reload(), 700) };
+    $('#rst').onclick = () => { if (confirm('Reset all demo data (courses, quizzes and settings)?')) { try { localStorage.removeItem(KEY) } catch (e) { } location.reload() } };
+    $('#lo2').onclick = () => { location.href = 'StudyMate_login.html' }
+}
+
+const CARDS = [
+    { t: 'Branch Coverage', term: 'Branch coverage', def: 'The percentage of decision outcomes (true and false) executed by tests.', q: 'What does branch coverage measure?', a: 'How many decision outcomes (true and false) your tests executed.', cz: 'Branch coverage measures the percentage of decision ____ executed by tests.', ans: 'outcomes', src: '📄 Lecture3_Coverage.pdf · p.12' },
+    { t: 'Branch Coverage', term: 'Statement coverage', def: 'The percentage of code statements executed by tests.', q: 'What does statement coverage measure?', a: 'The share of statements that ran during testing.', cz: 'Statement coverage counts how many ____ were executed.', ans: 'statements', src: '📄 Lecture3_Coverage.pdf · p.9' },
+    { t: 'Branch Coverage', term: 'Decision point', def: 'A place in code where execution can go two ways, like an if.', q: 'What is a decision point in code?', a: 'A place like an if where the program can go two ways.', cz: 'An if statement is a decision point with a true and a ____ outcome.', ans: 'false', src: '📄 Lecture3_Coverage.pdf · p.11' },
+    { t: 'Branch Coverage', term: 'Full branch coverage of one if-else', def: 'Needs at least two tests: one for true and one for false.', q: 'How many tests cover one if-else fully?', a: 'At least two: one for true and one for false.', cz: 'One if-else needs at least ____ tests for full branch coverage.', ans: 'two', src: '📄 Lecture3_Coverage.pdf · p.14' },
+    { t: 'Unit Testing', term: 'Unit test', def: 'A test of one small piece of code in isolation.', q: 'What does a unit test check?', a: 'One small piece of code, like a function, in isolation.', cz: 'A unit test checks one small ____ of code in isolation.', ans: 'piece', src: '📄 Lecture2_Unit.pdf · p.5' },
+    { t: 'Unit Testing', term: 'Test independence', def: 'Tests must not depend on each other or on the order they run in.', q: 'Why should unit tests be independent?', a: 'So one failing test does not affect others and order never matters.', cz: 'Good unit tests do not depend on the ____ they run in.', ans: 'order', src: '📄 Lecture2_Unit.pdf · p.9' },
+    { t: 'Unit Testing', term: 'Assertion', def: 'A check that the actual result equals the expected result.', q: 'What is an assertion in a test?', a: 'A check that compares the actual result with the expected result.', cz: 'An assertion compares the actual result with the ____ result.', ans: 'expected', src: '📄 Lecture2_Unit.pdf · p.7' },
+    { t: 'Unit Testing', term: 'Mock (test double)', def: 'A stand-in object that replaces a real dependency during a test.', q: 'What is a mock used for?', a: 'To replace a real dependency so a unit can be tested alone.', cz: 'A mock replaces a real ____ during a unit test.', ans: 'dependency', src: '📄 Lecture2_Unit.pdf · p.12' },
+    { t: 'Integration Testing', term: 'Integration testing', def: 'Testing how modules work together.', q: 'What does integration testing focus on?', a: 'How modules interact: interfaces and data flow.', cz: 'Integration testing checks how ____ work together.', ans: 'modules', src: '📙 Week5_Integration.pptx · slide 7' },
+    { t: 'Integration Testing', term: 'Big-bang integration', def: 'Combine all modules at once, then test the whole.', q: 'What is big-bang integration?', a: 'Combining all modules at once and testing everything together.', cz: 'In big-bang integration, all modules are combined ____.', ans: 'at once', src: '📙 Week5_Integration.pptx · slide 9' },
+    { t: 'Integration Testing', term: 'Top-down integration', def: 'Test from the top module downward, using stubs for lower modules.', q: 'What does top-down integration use for missing lower modules?', a: 'Stubs.', cz: 'Top-down integration uses ____ for lower modules not yet built.', ans: 'stubs', src: '📙 Week5_Integration.pptx · slide 10' },
+    { t: 'Integration Testing', term: 'Bottom-up integration', def: 'Test lower modules first, using drivers to call them.', q: 'What does bottom-up integration use to call lower modules?', a: 'Drivers.', cz: 'Bottom-up integration uses ____ to call lower modules.', ans: 'drivers', src: '📙 Week5_Integration.pptx · slide 11' }];
+const FS = { term: 'Term → definition', q: 'Question → answer', cloze: 'Fill in the blank' };
+let fcs;
+// Handles flashcard-related actions.
+function fc() {    
+S.decks = S.decks || [];
+    const cs = $('#fcc'); cs.innerHTML = S.courses.map((c, i) => `<option value="${i}">${esc(c.code)} — ${esc(c.name)}</option>`).join('');
+    const fill = () => { const l = (S.courses[+cs.value] || { files: [] }).files.filter(f => f.c); $('#fcfile').innerHTML = l.map(f => `<option>${esc(f.n)}</option>`).join('') || '<option value="">No processed files yet</option>' };
+    cs.onchange = fill; fill();
+    if (S.fc) { const f = S.courses[S.fc.c] && S.courses[S.fc.c].files[S.fc.f]; cs.value = S.fc.c; fill(); if (f && f.c) $('#fcfile').value = f.n; delete S.fc; save() }
+    $('#fcg').onclick = () => {        
+const fn = $('#fcfile').value, m = $('#fcm');
+        if (!fn) { m.innerHTML = 'Upload a file in <a href="' + MAP.courses + '" style="color:var(--p);font-weight:600">My Courses</a> first and wait until it is ready.'; return }
+        const n = +$('#fcn').value, st = $('#fcs').value, rg = $('#fcr').value, btn = $('#fcg'), steps = ['📖 Reading your slides…', '🔎 Finding the key ideas…', '✍️ Writing your cards…']; let k = 0;
+        btn.disabled = true; m.textContent = steps[0]; const iv = setInterval(() => { k++; if (k < steps.length) m.textContent = steps[k] }, 450);
+        setTimeout(() => {            
+clearInterval(iv); btn.disabled = false; m.textContent = '';
+            const key = /coverage/i.test(fn) ? 'Branch Coverage' : /integration/i.test(fn) ? 'Integration Testing' : /unit/i.test(fn) ? 'Unit Testing' : null;
+            let pool = CARDS.filter(x => !key || x.t === key); if (pool.length < n) pool = pool.concat(CARDS.filter(x => !pool.includes(x)));
+            const cards = pool.slice(0, n).map(x => ({ f: st === 'term' ? x.term : st === 'q' ? x.q : x.cz, b: st === 'term' ? x.def : st === 'q' ? x.a : x.cz.replace('____', x.ans), src: x.src, t: x.t, st: 0 }));
+            S.decks.unshift({ name: fn.replace(/\.\w+$/, '') + ' · ' + rg, course: cs.selectedOptions[0].textContent, style: st, cards }); save(); rDecks(); startDeck(0)        
+}, 1500)    
+};
+    $('#fcd').onclick = e => { const s = e.target.closest('[data-s]'), x = e.target.closest('[data-d]'); if (s) startDeck(+s.dataset.s); if (x && confirm('Delete this deck?')) { S.decks.splice(+x.dataset.d, 1); save(); rDecks() } };
+    $('#fcStudy').onclick = e => {        
+const s = fcs; if (!s) return;
+        if (e.target.closest('#fcflip')) { s.flip = !s.flip; fcRender(); return }
+        const r = e.target.closest('[data-r]');
+        if (r) { const idx = s.q[s.p], c = s.d.cards[idx]; if (r.dataset.r === '1') { c.st = 2; s.got++ } else { c.st = 1; s.miss.push(idx) } save(); s.p++; s.flip = false; fcRender(); return }
+        if (e.target.closest('#fcmiss')) { startDeck(s.i, s.miss); return }
+        if (e.target.closest('#fcx')) { $('#fcStudy').classList.add('hide'); $('#fcHome').classList.remove('hide'); rDecks() }    
+};
+    rDecks()
+}
+// Displays the saved flashcard decks.
+function rDecks() {    
+$('#fcd').innerHTML = S.decks.map((d, i) => {        
+const n = d.cards.length, m = d.cards.filter(c => c.st === 2).length;
+        return `<div class="card"><div class="row"><h3>${esc(d.name)}</h3><span class="tag">${n} cards</span></div><p class="empty">${esc(d.course)} · ${FS[d.style]}</p><div class="bar"><div class="hi" style="width:${n ? m / n * 100 : 0}%"></div></div><div class="row"><span>${m} of ${n} mastered</span></div><div style="display:flex;gap:8px;margin-top:12px"><button class="btn" data-s="${i}">▶ Study</button><button class="btn ghost" data-d="${i}">🗑️ Delete</button></div></div>`    
+}).join('') || '<p class="empty">No decks yet. Create your first one above 👆</p>'
+}
+// Starts a selected flashcard deck.
+function startDeck(i, idx) { const d = S.decks[i]; fcs = { i, d, q: idx || d.cards.map((_, k) => k), p: 0, flip: false, got: 0, miss: [] }; $('#fcHome').classList.add('hide'); $('#fcStudy').classList.remove('hide'); fcRender(); scrollTo(0, 0) }
+// Helper function: fcRender().
+function fcRender() {    
+const s = fcs, el = $('#fcStudy');
+    if (s.p >= s.q.length) { el.innerHTML = `<div class="card"><h3>🎉 Session complete!</h3><div class="stat"><b>${s.got}/${s.q.length}</b><span>cards marked "Got it"</span></div><p style="margin:12px 0;font-size:14px;color:var(--muted)">🦉 ${s.miss.length ? 'Nice work! Let us go over the ' + s.miss.length + ' tricky card' + (s.miss.length > 1 ? 's' : '') + ' once more.' : 'Every card is mastered. Time to test yourself with a quiz!'}</p><div class="fcbtns" style="justify-content:flex-start">${s.miss.length ? '<button class="btn" id="fcmiss">🔁 Review missed cards</button>' : '<a class="btn" href="' + MAP.quiz + '">📝 Take a quiz</a>'}<button class="btn ghost" id="fcx">📚 Back to decks</button></div></div>`; return }
+    const c = s.d.cards[s.q[s.p]];
+    el.innerHTML = `<div class="card"><div class="tb"><span class="tag">${esc(s.d.name)}</span><span class="tag">Card ${s.p + 1} of ${s.q.length}</span></div><div class="bar"><div style="width:${s.p / s.q.length * 100}%"></div></div>
+ <button class="fcard${s.flip ? ' flip' : ''}" id="fcflip" aria-label="Flip card"><small>${s.flip ? 'Answer' : FS[s.d.style].split(' → ')[0]}</small><div>${esc(s.flip ? c.b : c.f)}</div>${s.flip ? '<span class="src">' + c.src + '</span>' : '<em>Tap to flip</em>'}</button>
+ ${s.flip ? '<div class="fcbtns"><button class="btn ghost" data-r="0">😅 Review again</button><button class="btn" data-r="1">🙂 Got it</button></div>' : ''}
+ <button class="btn ghost" id="fcx" style="margin-top:16px">← Back to decks</button></div>`;
+    $('#fcflip').focus({ preventScroll: true })
+}
+const PG = PAGE;
+({ dash, courses: rCourses, ask: rSel, quiz: () => { rSel(); if (S.pick) { $('#qtp').value = S.pick } }, prog, settings, cards: fc }[PG] || (() => { }))();
+  
+// Games navigation: open the separate Games page when a Games button is clicked.
+document.querySelectorAll('button[data-v="games"]').forEach((button) => {
+    button.addEventListener('click', () => {
+        window.location.href = 'StudyMate_games.html';
+    });
+});
+</script>
+</body>
+</html>
+
