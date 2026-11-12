@@ -2,6 +2,7 @@ from django.shortcuts import render
 import json
 import logging
 import shutil
+import zipfile
 
 from pathlib import Path
 
@@ -16,11 +17,10 @@ from .gemini_utils import generate_answer
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.auth.decorators import login_required
 from courses.pdf_utils import extract_text_from_pdf
+from courses.pptx_utils import extract_text_from_pptx
 from courses.chunk_utils import split_text_into_chunks
 from courses.embedding_utils import generate_embeddings
 from courses.faiss_utils import create_faiss_index, save_faiss_index
-
-from .models import Course
 
 
 
@@ -101,7 +101,7 @@ def ask_studymate(request):
         folder / "chunks.json"
     ).is_file():
         return JsonResponse(
-            {"error": "This PDF has not been indexed yet."},
+            {"error": "This material has not been indexed yet."},
             status=404
         )
 
@@ -231,9 +231,6 @@ def add_course(request):
     }, status=201)
 
 
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
-
 @login_required
 def list_courses(request):
     courses = Course.objects.filter(
@@ -258,16 +255,16 @@ def list_courses(request):
 @login_required
 @require_POST
 def upload_material(request):
-    # STEP 1: Receive PDF and course ID from the frontend
+    # STEP 1: Receive a PDF or PPTX and course ID from the frontend.
     course_id = request.POST.get("course_id")
     uploaded_file = request.FILES.get("file")
 
     if not course_id or not uploaded_file:
         return JsonResponse({
-            "error": "Please select a course and PDF."
+            "error": "Please select a course and a PDF or PPTX file."
         }, status=400)
 
-    # STEP 2: Verify that the course belongs to this user
+    # STEP 2: Verify that the course belongs to this user.
     try:
         course = Course.objects.get(
             id=course_id,
@@ -278,77 +275,94 @@ def upload_material(request):
             "error": "Course not found."
         }, status=404)
 
-    # STEP 3: Validate the uploaded file
-    if not uploaded_file.name.lower().endswith(".pdf"):
+    # STEP 3: Check file type, size, and basic file structure.
+    file_type = Path(uploaded_file.name).suffix.lower()
+
+    if file_type not in (".pdf", ".pptx"):
         return JsonResponse({
-            "error": "Only PDF files are supported."
+            "error": "Only PDF (.pdf) and PowerPoint (.pptx) files are supported."
         }, status=400)
 
     if uploaded_file.size > 20 * 1024 * 1024:
         return JsonResponse({
-            "error": "PDF must be 20 MB or smaller."
+            "error": "File must be 20 MB or smaller."
         }, status=400)
 
-    signature = uploaded_file.read(5)
-    uploaded_file.seek(0)
+    if file_type == ".pdf":
+        signature = uploaded_file.read(5)
+        uploaded_file.seek(0)
 
-    if signature != b"%PDF-":
-        return JsonResponse({
-            "error": "Invalid PDF file."
-        }, status=400)
+        if signature != b"%PDF-":
+            return JsonResponse({
+                "error": "Invalid PDF file."
+            }, status=400)
+
+    else:  # .pptx is an Office Open XML ZIP package.
+        try:
+            uploaded_file.seek(0)
+            with zipfile.ZipFile(uploaded_file) as package:
+                required_parts = {
+                    "[Content_Types].xml",
+                    "ppt/presentation.xml",
+                }
+                if not required_parts.issubset(package.namelist()):
+                    return JsonResponse({
+                        "error": "Invalid PowerPoint (.pptx) file."
+                    }, status=400)
+        except (zipfile.BadZipFile, OSError, ValueError):
+            return JsonResponse({
+                "error": "Invalid or damaged PowerPoint (.pptx) file."
+            }, status=400)
+        finally:
+            uploaded_file.seek(0)
 
     material = None
     index_folder = None
 
     try:
-        # STEP 4: Save the uploaded PDF and its database record
+        # STEP 4: Save uploaded file and create its database record.
         material = CourseMaterial.objects.create(
             course=course,
             title=Path(uploaded_file.name).stem,
             file=uploaded_file
         )
 
-        # STEP 5: Extract text from the saved PDF
-        text = extract_text_from_pdf(
-            material.file.path
-        )
+        # STEP 5: Extract text using the correct file-type utility.
+        if file_type == ".pdf":
+            extracted_text = extract_text_from_pdf(material.file.path)
+        else:
+            extracted_text = extract_text_from_pptx(material.file.path)
 
-        if not text or not text.strip():
+        if not extracted_text or not extracted_text.strip():
             raise ValueError(
-                "No extractable text found in this PDF."
+                "No extractable text found in this file."
             )
 
-        # STEP 6: Divide the extracted text into chunks
-        chunks = split_text_into_chunks(text)
+        # STEP 6: Reuse existing chunking pipeline.
+        chunks = split_text_into_chunks(extracted_text)
 
         if not chunks:
-            raise ValueError(
-                "No text chunks could be created."
-            )
+            raise ValueError("No text chunks could be created.")
 
-        # STEP 7: Convert chunks into numerical embeddings
+        # STEP 7: Reuse existing multilingual embeddings.
         embeddings = generate_embeddings(chunks)
 
-        # STEP 8: Create the FAISS vector index
+        # STEP 8: Reuse FAISS index creation.
         index = create_faiss_index(embeddings)
 
-        # STEP 9: Choose the index storage folder
+        # STEP 9: Choose the same per-material index folder.
         index_folder = (
-            settings.BASE_DIR
+            Path(settings.BASE_DIR)
             / "faiss_indexes"
             / f"material_{material.id}"
         )
 
-        # STEP 10: Save FAISS index and original chunks
-        save_faiss_index(
-            index,
-            chunks,
-            index_folder
-        )
+        # STEP 10: Save FAISS index and text chunks.
+        save_faiss_index(index, chunks, index_folder)
 
-        # STEP 11: Return success to the frontend
+        # STEP 11: Preserve existing JSON response structure.
         return JsonResponse({
-            "message": "PDF uploaded and indexed successfully!",
+            "message": f"{file_type[1:].upper()} uploaded and indexed successfully!",
             "material": {
                 "id": material.id,
                 "title": material.title,
@@ -359,10 +373,8 @@ def upload_material(request):
             "total_chunks": len(chunks)
         }, status=201)
 
-    except Exception as error:
-        # Clean up this failed new upload so the database
-        # does not contain a PDF marked as uploaded but
-        # missing its completed FAISS index.
+    except Exception:
+        # Clean up only this failed new material and its index.
         if index_folder is not None:
             shutil.rmtree(index_folder, ignore_errors=True)
 
@@ -370,15 +382,11 @@ def upload_material(request):
             material.file.delete(save=False)
             material.delete()
 
-        # Keep technical details in the Django terminal.
-        import logging
-        logging.getLogger(__name__).exception(
-            "PDF upload/indexing failed"
-        )
+        logger.exception("PDF/PPTX upload or indexing failed")
 
         return JsonResponse({
             "error": (
-                "PDF upload or indexing failed. "
+                "File upload or indexing failed. "
                 "Check the Django terminal for details."
             )
         }, status=500)
@@ -387,7 +395,7 @@ def upload_material(request):
 @login_required
 def list_course_materials(request):
     """
-    Retrieve all courses and their uploaded PDFs
+    Retrieve all courses and their uploaded PDF/PPTX materials
     for the currently logged-in user.
     """
 
