@@ -1,6 +1,7 @@
-
 from django.urls import path
 from . import views
+from . import youtube_views
+from . import flashcard_views
 
 
 urlpatterns = [
@@ -54,4 +55,37 @@ urlpatterns = [
         name="ask_studymate"
     ),
 
+    # Landing page
+    path(
+       "landing/",
+        views.landing_page,
+        name="landing_page"
+    ),
+    # Registration directly from landing page
+    path(
+        "landing-signup/",
+        views.landing_signup,
+        name="landing_signup"
+    ),
+
+        # YouTube Recommendations page
+    path(
+        "youtube/",
+        youtube_views.youtube_recommendations_page,
+        name="youtube_recommendations_page"
+    ),
+
+    # Generate YouTube recommendations
+    path(
+        "youtube/recommend/",
+        youtube_views.get_youtube_recommendations,
+        name="get_youtube_recommendations"
+    ),
+
+        # Generate AI flashcards from uploaded lecture chunks
+    path(
+        "flashcards/generate/",
+        flashcard_views.generate_flashcards_view,
+        name="generate_flashcards"
+    ),
 ]
