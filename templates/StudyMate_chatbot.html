@@ -1703,6 +1703,17 @@ main::after {
 
  <body data-page="chatbot">
 
+<!-- Django logout form -->
+<form
+    id="django-logout-form"
+    method="post"
+    action="{% url 'account_logout' %}"
+    style="display:none;"
+>
+    {% csrf_token %}
+</form>
+
+
   <aside>
 
    <div class="sl">
@@ -1736,6 +1747,9 @@ main::after {
      💬 Ask StudyMate
 
     </button>
+    <button data-v="youtube">
+    ▶ YouTube Videos
+    </button> 
 
     <button data-v="cards">🃏 Flashcards</button>
 
@@ -1995,21 +2009,18 @@ let qi=0;
 
 const moods=[["😄", "Amazing", "Great energy! Try a Hard quiz and beat your best score."], ["😊", "Good", "Nice. Review one topic, then take a short Medium quiz."], ["😐", "Okay", "Start easy: ask for a Simple explanation, then 3 easy questions."], ["😔", "Tired", "Go gentle. Skim a summary for 10 minutes, then rest. That counts!"], ["😤", "Stressed", "Breathe. Pick just one weak topic and do 3 easy questions. One step only."]];
 
+
 const MAP = {
-
     dash: 'StudyMate_dashboard.html',
-
-    courses: 'StudyMate_courses.html',
-
-    ask: 'StudyMate_chatbot.html',
-
+    courses: '/courses/',
+    ask: '/chatbot/',
+    youtube: '/courses/youtube/',
     cards: 'StudyMate_flashcards.html',
-
     quiz: 'StudyMate_quiz.html',
-
+    games: 'StudyMate_games.html',
     prog: 'StudyMate_progress.html'
-
 };
+
 
 function show(v) {
 
@@ -2495,11 +2506,11 @@ if(su) {
 
     });
 
-    su.querySelector('#lo').onclick=()=> {
+    
+    su.querySelector('#lo').onclick = () => {
+      document.getElementById('django-logout-form').requestSubmit();
+};
 
-        location.href='StudyMate_login.html'
-
-    }
 
 }
 
@@ -2575,12 +2586,9 @@ function settings() {
 
     };
 
-    $('#lo2').onclick=()=> {
-
-        location.href='StudyMate_login.html'
-
-    }
-
+    $('#lo2').onclick = () => {
+        document.getElementById('django-logout-form').requestSubmit();
+    };
 }
 
 const PG=PAGE;
