@@ -8,6 +8,11 @@ from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 from django.shortcuts import render
+from django.contrib.auth import get_user_model, login
+from django.contrib.auth.password_validation import validate_password
+from django.core.exceptions import ValidationError
+from django.shortcuts import redirect
+from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 from google.genai.errors import ServerError
@@ -33,6 +38,7 @@ from .query_utils import (
 logger = logging.getLogger(__name__)
 
 
+@login_required
 @require_POST
 def ask_studymate(request):
     # STEP 1: Read and validate the JSON request.
@@ -89,10 +95,10 @@ def ask_studymate(request):
         )
 
     # STEP 3: Find the selected course material.
-    # This endpoint retains the access behavior of your existing code.
-    # Add authentication and ownership checks before production deployment.
+    # Only retrieve materials owned by the signed-in student.
     material = CourseMaterial.objects.filter(
-        pk=int(material_id)
+        pk=int(material_id),
+        course__user=request.user,
     ).first()
 
     if material is None:
@@ -235,15 +241,19 @@ def ask_studymate(request):
         )
 
 
+@login_required
 @ensure_csrf_cookie
 def chatbot_page(request):
     return render(request, "StudyMate_chatbot.html")
 
 
+@login_required
 def list_indexed_materials(request):
     materials = []
 
-    for material in CourseMaterial.objects.select_related("course").all():
+    for material in CourseMaterial.objects.select_related("course").filter(
+        course__user=request.user
+    ):
         folder = (
             Path(settings.BASE_DIR)
             / "faiss_indexes"
@@ -567,3 +577,47 @@ def list_course_materials(request):
         )
 
     return JsonResponse({"courses": course_data})
+
+
+@require_POST
+def landing_signup(request):
+    email = request.POST.get("email", "").strip().lower()
+    password = request.POST.get("password", "")
+
+    if not email or not password:
+        return redirect("/accounts/signup/")
+
+    User = get_user_model()
+
+    if User.objects.filter(email__iexact=email).exists():
+        return redirect("/accounts/login/")
+
+    try:
+        validate_password(password)
+    except ValidationError:
+        return redirect("/accounts/signup/")
+
+    username_field = User.USERNAME_FIELD
+
+    user_data = {
+        username_field: email,
+    }
+
+    if username_field != "email":
+        user_data["email"] = email
+
+    user = User.objects.create_user(
+        password=password,
+        **user_data
+    )
+
+    login(
+        request,
+        user,
+        backend="django.contrib.auth.backends.ModelBackend"
+    )
+
+    return redirect("/courses/")
+
+def landing_page(request):
+    return render(request, "studymate_landing_page.html")
