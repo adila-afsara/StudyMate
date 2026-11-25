@@ -621,3 +621,10 @@ def landing_signup(request):
 
 def landing_page(request):
     return render(request, "studymate_landing_page.html")
+
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
+
+@login_required
+def quiz_page(request):
+    return render(request, "StudyMate_quiz.html")
