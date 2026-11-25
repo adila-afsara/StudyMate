@@ -2,13 +2,13 @@
 <html lang="en">
  <head>
   <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1, viewport-fit=cover" name="viewport"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
   <title>
-   Practice &amp; Quiz — StudyMate
+   Practice &amp; Quiz &mdash; StudyMate
   </title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
   <style>
-   :root {
+   :root{
     --bg:#F6F5FA;
     --card:#fff;
     --p:#6D4AE8;
@@ -21,79 +21,109 @@
     --ok:#1F8A5B;
     --okl:#E6F5EE;
     --bad:#D6455D;
-    --badl:#FDEBEE;
+    --badl:#FDEBEE}
+*{
     box-sizing:border-box;
-    padding-top:env(safe-area-inset-top,0px);
-    padding-bottom:env(safe-area-inset-bottom,0px)
-}
-@media (prefers-color-scheme:dark) {
-    :root:not([data-theme="light"]) {
-        --bg:#100E17;
-        --card:#191624;
-        --p:#9B82FF;
-        --pd:#B9A8FF;
-        --pl:#252038;
-        --line:#2C2740;
-        --text:#EEEBF7;
-        --muted:#9A94AE;
-        --on:#14101F;
-        --okl:#17332A;
-        --badl:#3A1D25
-    }
-}
-:root[data-theme="dark"] {
-    --bg:#100E17;
-    --card:#191624;
-    --p:#9B82FF;
-    --pd:#B9A8FF;
-    --pl:#252038;
-    --line:#2C2740;
-    --text:#EEEBF7;
-    --muted:#9A94AE;
-    --on:#14101F;
-    --okl:#17332A;
-    --badl:#3A1D25
-}
-* {
     margin:0;
-    padding:0;
-    box-sizing:border-box
-}
-html {
-    scroll-padding-top:env(safe-area-inset-top,0px)
-}
-body {
-    font-family:'Inter',system-ui,sans-serif;
+    padding:0}
+body{
+    font-family:Inter,system-ui,sans-serif;
     font-size:15px;
     line-height:1.55;
     background:var(--bg);
     color:var(--text);
-    min-height:100vh;
-    -webkit-font-smoothing:antialiased
-}
-h1,h2,h3 {
+    min-height:100vh}
+button{
+    font:inherit;
+    cursor:pointer}
+h1,h2,h3{
     font-weight:700;
     letter-spacing:-.02em;
-    line-height:1.2
-}
-button {
-    font-family:inherit;
-    cursor:pointer
-}
-:focus-visible {
-    outline:3px solid var(--p);
-    outline-offset:2px
-}
-.hide {
-    display:none!important
-}
-label {
+    line-height:1.2}
+.hide{
+    display:none!important}
+aside{
+    position:sticky;
+    top:0;
+    z-index:10;
+    display:flex;
+    align-items:center;
+    gap:28px;
+    min-height:66px;
+    padding:10px max(5vw,20px);
+    background:var(--card);
+    border-bottom:1px solid var(--line)}
+.sl{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-size:18px;
+    font-weight:700;
+    white-space:nowrap}
+.sl i{
+    width:34px;
+    height:34px;
+    border-radius:10px;
+    background:var(--p);
+    display:grid;
+    place-items:center;
+    font-style:normal}
+nav{
+    flex:1;
+    display:flex;
+    gap:4px;
+    overflow-x:auto}
+nav button{
+    border:0;
+    border-radius:99px;
+    background:none;
+    color:var(--muted);
+    padding:8px 13px;
+    font-size:13px;
+    white-space:nowrap}
+nav button:hover,nav button.on{
+    background:var(--pl);
+    color:var(--pd)}
+.user{
+    font-size:13px;
+    white-space:nowrap;
+    color:var(--muted)}
+main{
+    max-width:1120px;
+    margin:auto;
+    padding:40px 5vw 56px}
+.top{
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-end;
+    margin-bottom:28px;
+    padding-bottom:20px;
+    border-bottom:1px solid var(--line)}
+.top h1{
+    font-size:34px}
+.top p{
+    color:var(--muted);
+    font-size:14px;
+    margin-top:5px}
+.card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:22px;
+    margin-bottom:16px}
+.card h3{
+    font-size:16px;
+    margin-bottom:12px}
+.grid{
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:16px}
+.field label{
     display:block;
     font-size:13px;
     font-weight:600;
-    margin:14px 0 6px
-}
-input,select {
+    margin:14px 0 6px}
+.field select,.field input,.answer-text{
     width:100%;
     padding:11px 14px;
     border:1px solid var(--line);
@@ -101,498 +131,74 @@ input,select {
     font:inherit;
     font-size:14px;
     background:var(--card);
-    color:var(--text)
-}
-input:focus,select:focus {
-    border-color:var(--p);
-    outline:none;
-    box-shadow:0 0 0 3px var(--pl)
-}
-.btn {
-    display:inline-block;
+    color:var(--text)}
+.field select:focus,.answer-text:focus{
+    outline:2px solid var(--pl);
+    border-color:var(--p)}
+.btn{
     background:var(--p);
     color:var(--on);
     border:0;
     border-radius:10px;
     padding:11px 18px;
     font-weight:600;
-    font-size:14px;
-    transition:background .15s
-}
-.btn:hover {
-    background:var(--pd);
-    color:var(--on)
-}
-.btn.full {
-    width:100%;
-    margin-top:20px
-}
-.btn.ghost {
+    font-size:14px}
+.btn:hover{
+    background:var(--pd)}
+.btn:disabled{
+    opacity:.55;
+    cursor:not-allowed}
+.btn.ghost{
     background:var(--pl);
-    color:var(--pd)
-}
-.btn.ghost:hover {
-    background:var(--line);
-    color:var(--pd)
-}
-
-/* auth */
-#login {
-    position:fixed;
-    inset:0;
-    z-index:50;
-    background:var(--card);
-    display:flex
-}
-.lp {
-    flex:1;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    padding:40px
-}
-.logo {
-    text-align:center;
-    margin-bottom:28px
-}
-.logo i {
-    width:52px;
-    height:52px;
-    border-radius:15px;
-    background:var(--p);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:26px;
-    font-style:normal;
-    margin:0 auto 12px
-}
-.logo b {
-    font-size:22px;
-    letter-spacing:-.02em;
-    display:block
-}
-.logo p {
-    font-size:13px;
-    color:var(--muted)
-}
-.fbox {
+    color:var(--pd)}
+.btn.full{
     width:100%;
-    max-width:380px
-}
-.fbox h2 {
-    font-size:26px;
-    margin-bottom:4px
-}
-.fbox>p {
+    margin-top:20px}
+.note,.muted{
     color:var(--muted);
-    font-size:14px;
-    margin-bottom:8px
-}
-.rp {
-    flex:1;
-    background:var(--pl);
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:48px;
-    text-align:center
-}
-.rp .big {
-    font-size:64px
-}
-.rp h2 {
-    font-size:28px;
-    margin:12px 0
-}
-.rp ul {
-    list-style:none;
-    max-width:320px;
-    margin:24px auto 0;
-    text-align:left;
-    display:grid;
-    gap:10px
-}
-.rp li {
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:12px;
-    padding:12px 14px;
-    font-size:14px
-}
-
-/* site header + page */
-.sl {
-    display:flex;
-    align-items:center;
-    gap:10px;
-    font-size:18px;
-    font-weight:700;
-    letter-spacing:-.02em
-}
-.sl i {
-    width:34px;
-    height:34px;
+    font-size:13px}
+.status{
+    padding:11px 14px;
     border-radius:10px;
-    background:var(--p);
-    display:grid;
-    place-items:center;
-    font-size:18px;
-    font-style:normal
-}
-aside {
-    position:sticky;
-    top:0;
-    z-index:10;
-    display:flex;
-    align-items:center;
-    gap:28px;
-    height:66px;
-    padding:0 max(5vw,20px);
-    background:var(--card);
-    border-bottom:1px solid var(--line)
-}
-aside nav {
-    flex:1;
-    display:flex;
-    gap:4px
-}
-nav button {
-    display:flex;
-    align-items:center;
-    gap:6px;
-    width:auto;
-    margin:0;
-    padding:8px 14px;
-    border:0;
-    border-radius:99px;
-    background:none;
-    color:var(--muted);
-    font-size:14px;
-    font-weight:500;
-    white-space:nowrap
-}
-nav button:hover {
-    background:var(--bg);
-    color:var(--text)
-}
-nav button.on {
-    background:var(--pl);
-    color:var(--pd);
-    font-weight:600
-}
-.su {
-    padding:0;
-    border:0;
+    margin:12px 0;
     font-size:13px;
-    display:flex;
-    gap:10px;
-    align-items:center;
-    white-space:nowrap
-}
-.su i {
-    font-style:normal;
-    width:34px;
-    height:34px;
-    border-radius:50%;
     background:var(--pl);
-    display:grid;
-    place-items:center
-}
-main {
-    margin:0 auto;
-    padding:40px 5vw 56px;
-    max-width:1120px
-}
-main::after {
-    content:"🎓 StudyMate · Junior Design Project · Built with Retrieval-Augmented Generation";
-    display:block;
-    text-align:center;
-    font-size:13px;
-    color:var(--muted);
-    margin-top:56px;
-    padding-top:20px;
-    border-top:1px solid var(--line)
-}
-.top {
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-end;
-    gap:12px;
-    flex-wrap:wrap;
-    margin-bottom:28px;
-    padding-bottom:20px;
-    border-bottom:1px solid var(--line)
-}
-.top h1 {
-    font-size:34px
-}
-.top p {
-    color:var(--muted);
-    font-size:14px;
-    margin-top:2px
-}
-.chip {
+    color:var(--pd)}
+.status.error{
+    background:var(--badl);
+    color:var(--bad)}
+.status.success{
+    background:var(--okl);
+    color:var(--ok)}
+.tag{
     display:inline-flex;
-    gap:6px;
     align-items:center;
     background:var(--pl);
     color:var(--pd);
     border-radius:99px;
-    padding:6px 14px;
-    font-size:13px;
-    font-weight:600;
-    border:0
-}
-.grid {
-    display:grid;
-    gap:16px
-}
-.g4 {
-    grid-template-columns:repeat(auto-fit,minmax(170px,1fr))
-}
-.g2 {
-    grid-template-columns:repeat(auto-fit,minmax(300px,1fr))
-}
-.card {
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:16px;
-    padding:20px
-}
-.card h3 {
-    font-size:16px;
-    margin-bottom:12px
-}
-.stat span {
-    font-size:13px;
-    color:var(--muted);
-    display:block
-}
-.stat b {
-    display:block;
-    font-size:30px;
-    letter-spacing:-.02em;
-    margin-top:4px
-}
-.mood {
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap
-}
-.mood button {
-    font-size:26px;
-    width:52px;
-    height:52px;
-    border-radius:14px;
-    border:1px solid var(--line);
-    background:var(--card)
-}
-.mood button:hover {
-    border-color:var(--p)
-}
-.mood button.on {
-    border-color:var(--p);
-    background:var(--pl)
-}
-.mnote {
-    margin-top:12px;
-    font-size:13px;
-    color:var(--muted);
-    min-height:40px
-}
-.quote {
-    background:var(--pl);
-    border-radius:16px;
-    padding:22px
-}
-.quote q {
-    display:block;
-    font-size:18px;
-    font-weight:600;
-    line-height:1.45;
-    letter-spacing:-.01em;
-    margin:8px 0;
-    quotes:none
-}
-.quote small {
-    color:var(--muted);
-    font-weight:500
-}
-.cycle {
-    display:flex;
-    flex-wrap:wrap;
-    gap:8px;
-    align-items:center;
-    font-size:13px;
-    font-weight:600;
-    color:var(--muted)
-}
-.cycle span {
-    background:var(--pl);
-    color:var(--pd);
-    border-radius:99px;
-    padding:6px 14px
-}
-.cycle span.now {
-    background:var(--p);
-    color:var(--on)
-}
-.bar {
+    padding:5px 11px;
+    font-size:12px;
+    font-weight:600}
+.bar{
     height:8px;
     border-radius:99px;
     background:var(--pl);
     overflow:hidden;
-    margin:6px 0 14px
-}
-.bar div {
+    margin:12px 0 20px}
+.bar>div{
     height:100%;
-    border-radius:99px;
-    background:var(--p)
-}
-.bar div.lo {
-    background:var(--bad)
-}
-.bar div.hi {
-    background:var(--ok)
-}
-.row {
-    display:flex;
-    justify-content:space-between;
-    font-size:13px;
-    gap:8px
-}
-.tag {
-    font-size:12px;
-    font-weight:600;
-    border-radius:99px;
-    padding:3px 10px;
-    background:var(--pl);
-    color:var(--pd)
-}
-.tag.ok {
-    background:var(--okl);
-    color:var(--ok)
-}
-.tag.bad {
-    background:var(--badl);
-    color:var(--bad)
-}
-.drop {
-    border:1.5px dashed var(--line);
-    border-radius:12px;
-    padding:16px;
-    text-align:center;
-    cursor:pointer;
-    font-size:13px;
-    color:var(--muted);
-    display:block;
-    margin-top:14px;
-    font-weight:500
-}
-.drop:hover,.drop:focus-within {
-    border-color:var(--p);
-    background:var(--pl);
-    color:var(--pd)
-}
-.drop input {
-    display:none
-}
-.file {
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:8px;
-    border-top:1px solid var(--line);
-    padding:10px 0;
-    font-size:13px
-}
-.empty {
-    color:var(--muted);
-    font-size:13px;
-    padding:8px 0
-}
-.form {
-    display:grid;
-    grid-template-columns:1fr 2fr auto;
-    gap:12px;
-    align-items:end
-}
-.form label {
-    margin-top:0
-}
-
-/* chat */
-.chat {
-    display:flex;
-    flex-direction:column;
-    height:calc(100vh - 230px);
-    min-height:420px
-}
-.msgs {
-    flex:1;
-    overflow-y:auto;
-    display:flex;
-    flex-direction:column;
-    gap:12px
-}
-.m {
-    max-width:78%;
-    padding:11px 14px;
-    border-radius:14px;
-    font-size:14.5px
-}
-.m.u {
-    align-self:flex-end;
     background:var(--p);
-    color:var(--on);
-    border-bottom-right-radius:4px
-}
-.m.b {
-    background:var(--bg);
-    border:1px solid var(--line);
-    border-bottom-left-radius:4px
-}
-.src {
-    display:inline-block;
-    margin:8px 6px 0 0;
-    font-size:12px;
-    font-weight:500;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:99px;
-    padding:3px 10px;
-    color:var(--pd)
-}
-.modes {
+    transition:width .2s}
+.question-head{
     display:flex;
-    gap:8px;
+    justify-content:space-between;
+    gap:10px;
     flex-wrap:wrap;
-    margin-bottom:14px
-}
-.modes button {
-    border:1px solid var(--line);
-    background:var(--card);
-    color:var(--text);
-    border-radius:99px;
-    padding:7px 14px;
-    font-size:13px;
-    font-weight:500
-}
-.modes button.on {
-    background:var(--p);
-    border-color:var(--p);
-    color:var(--on)
-}
-.send {
-    display:flex;
-    gap:8px;
-    margin-top:14px
-}
-
-/* quiz */
-.opt {
+    margin-bottom:12px}
+.question{
+    font-size:19px;
+    margin:18px 0}
+.opt{
     display:block;
     width:100%;
     text-align:left;
@@ -601,258 +207,73 @@ main::after {
     color:var(--text);
     border-radius:12px;
     padding:13px 16px;
-    margin-top:8px;
-    font-size:14px
-}
-.opt:hover {
-    border-color:var(--p)
-}
-.opt.sel {
+    margin-top:9px;
+    font-size:14px}
+.opt:hover{
+    border-color:var(--p)}
+.opt.selected{
     border-color:var(--p);
-    background:var(--pl)
-}
-.rev {
+    background:var(--pl)}
+.opt:disabled{
+    cursor:default}
+.answer-text{
+    min-height:110px;
+    resize:vertical}
+.run-actions{
+    display:flex;
+    justify-content:flex-end;
+    margin-top:18px}
+.result-score{
+    font-size:38px;
+    font-weight:700;
+    margin:12px 0}
+.review{
     border-left:3px solid var(--bad);
     background:var(--badl);
     border-radius:8px;
-    padding:12px 14px;
+    padding:13px 15px;
     margin-top:12px;
-    font-size:13px
-}
-.tb {
+    font-size:13px}
+.review.correct{
+    border-left-color:var(--ok);
+    background:var(--okl)}
+.actions{
     display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin-bottom:10px
-}
-.cta {
-    background:var(--pl);
-    border-radius:20px;
-    margin-bottom:48px
-}
-@media(max-width:820px) {
-    #login .rp {
-        display:none
-    }
-    aside {
-        gap:10px;
-        padding:0 12px;
-        height:58px;
-        overflow-x:auto
-    }
-    .sl {
-        font-size:0
-    }
-    .sl i {
-        font-size:18px
-    }
-    .su {
-        display:none
-    }
-    main {
-        padding:24px 16px 48px
-    }
-    .top h1 {
-        font-size:26px
-    }
-    .form {
-        grid-template-columns:1fr
-    }
-    .m {
-        max-width:92%
-    }
-}
-
-/* study buddy touches */
-.m.b {
-    margin-left:40px;
-    position:relative
-}
-.m.b::before {
-    content:"🦉";
-    position:absolute;
-    left:-40px;
-    top:0;
-    width:32px;
-    height:32px;
-    border-radius:50%;
-    background:var(--card);
-    border:1px solid var(--line);
-    display:grid;
-    place-items:center;
-    font-size:17px
-}
-.demo .m.b {
-    margin-left:40px
-}
-.goal .bar {
-    height:12px;
-    margin:8px 0 12px
-}
-.goal p {
-    font-size:14px;
-    color:var(--muted)
-}
-
-/* motivation banner */
-.banner {
-    display:flex;
-    align-items:center;
-    gap:26px;
-    background:var(--pl);
-    border:2px solid color-mix(in srgb,var(--p) 45%,var(--line));
-    border-radius:20px;
-    padding:22px 28px;
-    margin-bottom:24px
-}
-.banner .art {
-    position:relative;
-    flex:none;
-    width:104px;
-    height:104px;
-    border-radius:50%;
-    background:var(--card);
-    display:grid;
-    place-items:center;
-    font-size:58px
-}
-.banner .art i {
-    position:absolute;
-    font-style:normal;
-    font-size:20px
-}
-.banner .a1 {
-    top:-4px;
-    left:-6px
-}
-.banner .a2 {
-    top:0;
-    right:-8px
-}
-.banner .a3 {
-    bottom:2px;
-    left:-10px
-}
-.banner .a4 {
-    bottom:-2px;
-    right:-4px
-}
-.banner h2 {
-    font-size:22px;
-    color:var(--pd);
-    margin-bottom:4px
-}
-.banner p {
-    color:var(--muted);
-    font-size:14.5px
-}
-.banner .btn {
-    flex:none
-}
-@media(max-width:820px) {
-    .banner {
-        flex-direction:column;
-        text-align:center;
-        padding:22px 18px
-    }
-}
-.banner .art {
-    width:120px;
-    height:120px;
-    background:none;
-    border-radius:0;
-    display:block
-}
-.banner .art svg {
-    width:100%;
-    height:100%
-}
-
-/* user menu */
-.su {
-    position:relative
-}
-.ub {
-    display:flex;
-    align-items:center;
     gap:10px;
-    background:none;
-    border:0;
-    padding:4px 8px;
-    border-radius:12px;
-    color:var(--text);
-    text-align:left;
-    font-size:13px;
-    line-height:1.3
-}
-.ub:hover {
-    background:var(--bg)
-}
-.ub small {
+    flex-wrap:wrap;
+    margin-top:18px}
+footer{
+    text-align:center;
     color:var(--muted);
-    font-size:12px
-}
-.um {
-    position:fixed;
-    top:62px;
-    right:max(5vw,20px);
-    width:210px;
-    background:var(--card);
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:6px;
-    box-shadow:0 18px 40px -20px rgba(23,21,31,.45);
-    z-index:30
-}
-.um a,.um button {
-    display:block;
-    width:100%;
-    text-align:left;
-    padding:10px 12px;
-    border:0;
-    background:none;
-    border-radius:9px;
-    color:var(--text);
-    font-size:14px;
-    text-decoration:none
-}
-.um a:hover,.um button:hover {
-    background:var(--pl)
-}
-.um #lo {
-    color:var(--bad)
-}
-@media(max-width:820px) {
-    .su {
-        display:flex
-    }
-    .ub span,.ub b {
-        display:none
-    }
-    .um {
-        right:12px
-    }
-}
-textarea {
-    width:100%;
-    padding:12px 14px;
-    border:1px solid var(--line);
-    border-radius:12px;
-    font:inherit;
-    font-size:14px;
-    background:var(--card);
-    color:var(--text);
-    resize:vertical;
-    margin-top:10px
-}
-textarea:focus {
-    border-color:var(--p);
-    outline:none;
-    box-shadow:0 0 0 3px var(--pl)
+    font-size:12px;
+    margin-top:48px;
+    padding-top:18px;
+    border-top:1px solid var(--line)}
+@media(max-width:820px){
+    aside{
+        gap:10px;
+        padding:10px 12px;
+        align-items:flex-start;
+        flex-wrap:wrap}
+    .sl{
+        font-size:0}
+    .sl i{
+        font-size:18px}
+    nav{
+        order:3;
+        flex-basis:100%}
+    .user{
+        margin-left:auto}
+    main{
+        padding:24px 16px 48px}
+    .top h1{
+        font-size:26px}
+    .grid{
+        grid-template-columns:1fr}
 }
   </style>
  </head>
- <body data-page="quiz">
+ <body>
   <aside>
    <div class="sl">
     <i>
@@ -861,79 +282,74 @@ textarea:focus {
     StudyMate
    </div>
    <nav id="nav">
-    <button data-v="dash">
+    <button data-url="StudyMate_dashboard.html">
      🏠 Dashboard
     </button>
-    <button data-v="courses">
+    <button data-url="StudyMate_courses.html">
      📚 My Courses
     </button>
-    <button data-v="ask">
+    <button data-url="StudyMate_chatbot.html">
      💬 Ask StudyMate
     </button>
-    <button data-v="cards">🃏 Flashcards</button>
-    <button data-v="quiz">
+    <button data-url="StudyMate_flashcards.html">
+     🃏 Flashcards
+    </button>
+    <button class="on">
      📝 Practice &amp; Quiz
     </button>
-    <button data-v="games">🎮 Games</button>
-    <button data-v="prog">
+    <button data-url="StudyMate_games.html">
+     🎮 Games
+    </button>
+    <button data-url="StudyMate_progress.html">
      📈 My Progress
     </button>
    </nav>
-   <div class="su">
-    <i>
-     🧑‍🎓
-    </i>
-    <div>
-     <b>
-      Adila
-     </b>
-     <br/>
-     <span style="color:var(--muted)">
-      Junior, CSE
-     </span>
-    </div>
+   <div class="user">
+    🧑&zwj;🎓 StudyMate Student
    </div>
   </aside>
   <main>
-   <section id="v-quiz">
+   <section>
     <div class="top">
      <div>
       <h1>
        📝 Practice &amp; Quiz
       </h1>
       <p>
-       Build a mock test from your own course content.
+       Build a mock test from your own uploaded course materials.
       </p>
      </div>
+    </div>
+    <div class="status hide" id="notice" role="status">
     </div>
     <div class="card" id="qsetup">
      <h3>
       ⚙️ Set up your quiz
      </h3>
-     <div class="grid g2">
-      <div>
+     <div class="grid">
+      <div class="field">
        <label for="qc">
         Course
        </label>
        <select id="qc">
+        <option value="">
+         Loading courses&hellip;
+        </option>
+       </select>
+       <label for="qm">
+        Uploaded lecture
+       </label>
+       <select disabled="" id="qm">
+        <option value="">
+         Select a course first
+        </option>
        </select>
        <label for="qtp">
         Topic
        </label>
-       <select id="qtp">
-        <option>
-         All topics
-        </option>
-        <option>
-         Branch Coverage
-        </option>
-        <option>
-         Unit Testing
-        </option>
-        <option>
-         Integration Testing
-        </option>
-       </select>
+       <input id="qtp" placeholder="All topics or enter a topic" type="text" value="All topics"/>
+      </div>
+      <div class="field">
        <label for="qty">
         Question type
        </label>
@@ -951,19 +367,17 @@ textarea:focus {
          Mixed (all types)
         </option>
        </select>
-      </div>
-      <div>
        <label for="qn2">
-        Questions
+        Number of questions
        </label>
        <select id="qn2">
-        <option>
+        <option value="3">
          3
         </option>
-        <option>
+        <option value="5">
          5
         </option>
-        <option>
+        <option value="10">
          10
         </option>
        </select>
@@ -985,16 +399,16 @@ textarea:focus {
         Time limit
        </label>
        <select id="qtm">
-        <option>
+        <option value="0">
          No limit
         </option>
-        <option>
+        <option value="120">
          2 min
         </option>
-        <option>
+        <option value="300">
          5 min
         </option>
-        <option>
+        <option value="600">
          10 min
         </option>
        </select>
@@ -1003,486 +417,634 @@ textarea:focus {
      <button class="btn full" id="qgo">
       🚀 Generate quiz
      </button>
-     <p style="font-size:12px;color:var(--muted);margin-top:10px">
-      Demo note: questions here are samples. In the full system they are generated from your retrieved material.
+     <p class="note" style="margin-top:10px">
+      Questions are generated from the selected uploaded lecture using the StudyMate backend.
      </p>
     </div>
     <div class="card hide" id="qrun">
     </div>
-    <div class="hide" id="qres">
+    <div class="card hide" id="qres">
     </div>
    </section>
+   <footer>
+    🎓 StudyMate &middot; Junior Design Project &middot; Built with Retrieval-Augmented Generation
+   </footer>
   </main>
-  <script>const PAGE=( {
-    dashboard:'dash', chatbot:'ask', progress:'prog'
-})[document.body.dataset.page]||document.body.dataset.page;
-const NOOP=new Proxy( {
-    classList: {
-        add() {
-        },remove() {
-        },toggle() {
-        }
-    },children:[], style: {
-    }
-}, {
-    set:()=>true, get:(t, k)=>k in t?t[k]:()=> {
-    }
-});
-const $=s=>document.querySelector(s)||NOOP, $$=s=>[...document.querySelectorAll(s)];
-const KEY='studymate_state';
-const S0= {
-    courses:[ {
-        code:'CSE 4101', name:'Software Testing', files:[ {
-            n:'Lecture3_Coverage.pdf', c:42
-        }, {
-            n:'Week5_Integration.pptx', c:28
-        }]
-    }, {
-        code:'CSE 3205', name:'Database Systems', files:[]
-    }],
-    topics: {
-        'Branch Coverage':45, 'Unit Testing':72, 'Integration Testing':88
-    },hist:[ {
-        t:'Integration Testing', s:88, d:'Mon'
-    }, {
-        t:'Branch Coverage', s:45, d:'Sat'
-    }], mood:null
-};
-const Q=[["Software Testing quotes", "x"]];
-const quotes=[["Small progress each day adds up to big results.", "Study tip"], ["It always seems impossible until it is done.", "Nelson Mandela"], ["You don't have to be great to start, but you have to start to be great.", "Zig Ziglar"], ["The expert in anything was once a beginner.", "Helen Hayes"], ["Mistakes are proof that you are trying.", "Unknown"]];
-let S;
-try {
-    S=JSON.parse(localStorage.getItem(KEY))
-}
-catch(e) {
-}
-S=S||S0;
-function save() {
-    try {
-        localStorage.setItem(KEY, JSON.stringify(S))
-    }
-    catch(e) {
-    }
-}
-S.set=S.set|| {
-    name:'Adila', email:'adila@email.com', prog:'Junior, CSE', mode:'Simple', goal:10, rem:'Off', theme:'system'
-};
-function theme() {
-    const t=S.set.theme;
-    if(t==='system')document.documentElement.removeAttribute('data-theme');
-    else document.documentElement.setAttribute('data-theme', t)
-}
-theme();
-const first=()=>S.set.name.split(' ')[0];
-let qi=0;
-const moods=[["😄", "Amazing", "Great energy! Try a Hard quiz and beat your best score."], ["😊", "Good", "Nice. Review one topic, then take a short Medium quiz."], ["😐", "Okay", "Start easy: ask for a Simple explanation, then 3 easy questions."], ["😔", "Tired", "Go gentle. Skim a summary for 10 minutes, then rest. That counts!"], ["😤", "Stressed", "Breathe. Pick just one weak topic and do 3 easy questions. One step only."]];
-const MAP = {
-    dash: 'StudyMate_dashboard.html',
-    courses: 'StudyMate_courses.html',
-    ask: 'StudyMate_chatbot.html',
-    cards: 'StudyMate_flashcards.html',
-    quiz: 'StudyMate_quiz.html',
-    prog: 'StudyMate_progress.html'
-};
-function show(v) {
-    location.href=MAP[v]
-}
-$$('#nav button').forEach(b=>b.classList.toggle('on', b.dataset.v===PAGE));
-$('#nav').onclick=e=> {
-    const b=e.target.closest('button');
-    if(b)show(b.dataset.v)
-};
-$$('[data-go]').forEach(b=>b.onclick=()=>show(b.dataset.go));
-$('#go').onclick=()=> {
-    location.href=MAP.dash
-};
-function bar(n, p) {
-    return `<div class="row"><span>${n}</span><b>${p}%</b></div><div class="bar"><div class="${p<60?'lo':p>=80?'hi':''}" style="width:${p}%"></div></div>`
-}
-function dash() {
-    const ts=Object.entries(S.topics), avg=Math.round(S.hist.reduce((a, h)=>a+h.s, 0)/S.hist.length), m=S.courses.reduce((a, c)=>a+c.files.length, 0);
-    $('#stats').innerHTML=[['📝', S.hist.length, 'Quizzes taken'], ['⭐', avg+'%', 'Average score'], ['📚', S.courses.length, 'Courses'], ['📄', m, 'Materials uploaded']].map(x=>`<div class="card stat"><span>${x[0]} ${x[2]}</span><b>${x[1]}</b></div>`).join('');
-    const g=Math.min(S.hist.length, S.set.goal);
-    $('#gt').textContent='🎯 Semester goal: '+S.set.goal+' quizzes';
-    $('#hi').textContent='Hi '+first()+'! Ready to learn? ✨';
-    $('#goalv').textContent=g+' / '+S.set.goal;
-    $('#goalb').style.width=g/S.set.goal*100+'%';
-    $('#goalm').textContent=g>=S.set.goal?'Goal reached! Time to set a new one. 🎉':(S.set.goal-g)+' more quiz'+(S.set.goal-g>1?'zes':'')+' to reach your goal. You can do it!';
-    const lo=ts.filter(t=>t[1]<60), hi=ts.filter(t=>t[1]>=80);
-    const n=S.hist.length, wk=[...ts].sort((a, b)=>a[1]-b[1])[0];
-    $('#bn-t').textContent=avg>=80?"You're doing amazing! Keep it up! 🎉":avg>=60?"Great progress! Keep going! 💪":"Every quiz makes you stronger! 🌱";
-    $('#bn-m').textContent=`You've completed ${n} quiz${n>1?'zes':''} with an average of ${avg}%. Your progress report is ready${wk[1]<60?' — next, give '+wk[0]+' a little extra practice.':'!'}`;
-    $('#strong').innerHTML=hi.map(t=>bar(t[0], t[1])).join('')||'<p class="empty">Take a quiz to find your strengths.</p>';
-    $('#weak').innerHTML=lo.map(t=>bar(t[0], t[1])).join('')||'<p class="empty">Nothing urgent. Keep it up! 🎉</p>';
-    const w=ts.sort((a, b)=>a[1]-b[1])[0];
-    $('#nextStep').textContent=`Next step: review ${w[0]} (${w[1]}%), then take a short quiz on it.`;
-    $('#qt').textContent='“'+quotes[qi][0]+'”';
-    $('#qa').textContent='— '+quotes[qi][1];
-}
-$('#qn').onclick=()=> {
-    qi=(qi+1)%quotes.length;
-    dash()
-};
-$('#mood').innerHTML=moods.map((m, i)=>`<button title="${m[1]}" aria-label="${m[1]}" data-i="${i}">${m[0]}</button>`).join('');
-$('#mood').onclick=e=> {
-    const b=e.target.closest('button');
-    if(!b)return;
-    $$('#mood button').forEach(x=>x.classList.toggle('on', x===b));
-    const m=moods[b.dataset.i];
-    $('#mnote').innerHTML=`<b>Today's mood: ${m[1]} ${m[0]}</b><br/>${m[2]}`
-};
-function rCourses() {
-    save();
-    $('#clist').innerHTML=S.courses.map((c, i)=>`<div class="card"><div class="row"><h3>${c.code}</h3><span class="tag">${c.files.length} files</span></div><p style="font-size:14px;margin-bottom:6px">${c.name}</p>
- ${c.files.map(f=>`<div class="file"><span>$ {
-        /pdf$/i.test(f.n)?'📕':'📙'
-    }
-    $ {
-        f.n
-    }
-    </span><span class="tag ${f.c?'ok':''}">$ {
-        f.c?'✅ Ready · '+f.c+' chunks':'⏳ Processing…'
-    }
-    </span></div>`).join('')||'<p class="empty">No materials yet. Upload your first file below 👇</p>'}
- <label class="drop">📤 Upload PDF, PPT or PPTX<input type="file" multiple accept=".pdf,.ppt,.pptx" data-i="${i}"/></label></div>`).join('')
-}
-$('#clist').onchange=e=> {
-    const i=e.target.dataset.i;
-    if(i==null)return;
-    [...e.target.files].forEach(f=> {
-        const o= {
-            n:f.name, c:0
-        };S.courses[i].files.push(o); setTimeout(()=> {
-            o.c=15+Math.floor(Math.random()*40); rCourses()
-        },1400)
-    });
-    rCourses()
-};
-$('#addc').onclick=()=> {
-    const c=$('#cc').value.trim(), n=$('#cn').value.trim();
-    if(!c||!n) {
-        $('#cn').focus();
-        return
-    }
-    S.courses.push( {
-        code:c, name:n, files:[]
-    });
-    $('#cc').value=$('#cn').value='';
-    rCourses()
-};
-function rSel() {
-    const o=S.courses.map(c=>`<option>${c.code} — ${c.name}</option>`).join('');
-    $('#askc').innerHTML=o;
-    $('#qc').innerHTML=o;
-    if(!$('#msgs').children.length)add('b', 'Hi '+first()+'! 👋 Ask me anything about your course. I only answer from your uploaded materials and I will show where each answer comes from.')
-}
-let mode=S.set.mode||'Simple';
-$$('#modes button').forEach(b=>b.classList.toggle('on', b.dataset.m===mode));
-$('#modes').onclick=e=> {
-    const b=e.target.closest('button');
-    if(!b)return;
-    mode=b.dataset.m;
-    $$('#modes button').forEach(x=>x.classList.toggle('on', x===b))
-};
-function add(w, h) {
-    const d=document.createElement('div');
-    d.className='m '+w;
-    d.innerHTML=h;
-    $('#msgs').append(d);
-    d.scrollIntoView( {
-        block:'end'
-    });
-    return d
-}
-const ans= {
-    Simple:'Branch coverage checks that every decision in your code (like an if) has been taken both ways, true and false, at least once.', Normal:'Branch coverage measures the percentage of branches (true/false outcomes of each decision) executed by your tests. 100% means every branch ran at least once.', Example:'For <code>if (x&gt;0)</code>, one test with x=5 covers the true branch. You also need x=-1 to cover the false branch. Both together give 100% branch coverage.', Exam:'<b>Definition:</b> % of decision outcomes exercised by tests. <b>Formula:</b> branches executed ÷ total branches × 100. <b>Note:</b> it subsumes statement coverage.'
-};
-function ask() {
-    const q=$('#q').value.trim();
-    if(!q)return;
-    add('u', q.replace(/</g, '&lt;'));
-    $('#q').value='';
-    const t=add('b', '🔎 Searching your materials…');
-    setTimeout(()=> {
-        t.innerHTML=/branch|coverage|test/i.test(q)?`${ans[mode]}<br/><span class="src">📄 Lecture3_Coverage.pdf · p.12</span><span class="src">📙 Week5_Integration.pptx · slide 7</span>`:`I couldn't find that in your materials. Try uploading the related slides, or rephrase using a term from your lecture. 📎`
-    },900)
-}
-$('#sendb').onclick=ask;
-$('#q').onkeydown=e=> {
-    if(e.key==='Enter')ask()
-};
-const BANK=[
-{
-    t:'Branch Coverage', type:'mcq', q:'What does 100% branch coverage guarantee?', o:['Every line ran', 'Every decision was true and false at least once', 'No bugs remain', 'All paths were run'], a:1, src:'Lecture3_Coverage.pdf · p.12'
-},
-{
-    t:'Unit Testing', type:'mcq', q:'A unit test should mainly test…', o:['The whole system', 'One small piece in isolation', 'Only the database', 'The user interface'], a:1, src:'Lecture2_Unit.pdf · p.5'
-},
-{
-    t:'Integration Testing', type:'mcq', q:'Integration testing mainly finds problems in…', o:['Typos', 'Interactions between modules', 'Colour choices', 'Variable names'], a:1, src:'Week5_Integration.pptx · slide 7'
-},
-{
-    t:'Branch Coverage', type:'mcq', q:'For one if-else, the minimum tests for full branch coverage is…', o:['1', '2', '3', '4'], a:1, src:'Lecture3_Coverage.pdf · p.14'
-},
-{
-    t:'Unit Testing', type:'mcq', q:'Which is a good unit-test habit?', o:['Depend on test order', 'Keep tests independent', 'Use production data', 'Skip assertions'], a:1, src:'Lecture2_Unit.pdf · p.9'
-},
-{
-    t:'Branch Coverage', type:'tf', q:'100% branch coverage guarantees that every possible path has been tested.', o:['True', 'False'], a:1, why:'Branch coverage checks decision outcomes, not every combination of paths.', src:'Lecture3_Coverage.pdf · p.13'
-},
-{
-    t:'Branch Coverage', type:'tf', q:'A single if-else needs at least two tests for full branch coverage.', o:['True', 'False'], a:0, why:'One test for the true branch and one for the false branch.', src:'Lecture3_Coverage.pdf · p.14'
-},
-{
-    t:'Unit Testing', type:'tf', q:'A unit test should check one small piece of code in isolation.', o:['True', 'False'], a:0, why:'Isolation makes failures easy to locate.', src:'Lecture2_Unit.pdf · p.5'
-},
-{
-    t:'Unit Testing', type:'tf', q:'Good unit tests should depend on the order they run in.', o:['True', 'False'], a:1, why:'Tests should be independent of each other.', src:'Lecture2_Unit.pdf · p.9'
-},
-{
-    t:'Integration Testing', type:'tf', q:'Integration testing mainly checks how modules work together.', o:['True', 'False'], a:0, why:'It targets interfaces and data flow between modules.', src:'Week5_Integration.pptx · slide 7'
-},
-{
-    t:'Integration Testing', type:'tf', q:'Integration testing is normally done before any unit testing.', o:['True', 'False'], a:1, why:'Units are tested first, then combined.', src:'Week5_Integration.pptx · slide 4'
-},
-{
-    t:'Branch Coverage', type:'sa', q:'In one sentence, what is branch coverage?', ref:'The percentage of decision outcomes (true and false branches) that the tests execute.', kw:['decision', 'branch', 'true', 'false', 'percent', 'outcome'], min:2, src:'Lecture3_Coverage.pdf · p.12'
-},
-{
-    t:'Branch Coverage', type:'sa', q:'Why do we need both a true and a false test for an if statement?', ref:'So that each outcome of the decision is executed at least once.', kw:['outcome', 'both', 'each', 'execut', 'decision', 'branch'], min:2, src:'Lecture3_Coverage.pdf · p.14'
-},
-{
-    t:'Unit Testing', type:'sa', q:'What does a unit test check?', ref:'One small piece of code, such as a function, in isolation.', kw:['small', 'unit', 'function', 'isolat', 'one', 'single'], min:2, src:'Lecture2_Unit.pdf · p.5'
-},
-{
-    t:'Unit Testing', type:'sa', q:'Name one good habit for writing unit tests.', ref:'Keep tests independent, fast and repeatable.', kw:['independent', 'fast', 'repeat', 'assert', 'isolat'], min:1, src:'Lecture2_Unit.pdf · p.9'
-},
-{
-    t:'Integration Testing', type:'sa', q:'What kind of problems does integration testing find?', ref:'Problems in how modules interact, such as wrong data or interface mismatches.', kw:['interact', 'interface', 'module', 'together', 'data'], min:2, src:'Week5_Integration.pptx · slide 7'
-},
-{
-    t:'Integration Testing', type:'sa', q:'Give one example of an integration testing approach.', ref:'Big-bang, top-down, bottom-up or sandwich integration.', kw:['big', 'top', 'bottom', 'sandwich', 'incremental'], min:1, src:'Week5_Integration.pptx · slide 9'
-}];
-const TL= {
-    mcq:'MCQ', tf:'True / False', sa:'Short answer'
-};
-const shuf=x=> {
-    if(x.type!=='mcq')return {
-        ...x
-    };const ix=[...x.o.keys()].sort(()=>Math.random()-.5);
-    return {
-        ...x, o:ix.map(i=>x.o[i]), a:ix.indexOf(x.a)
-    }
-};
-const okq=(x, v)=>x.type==='sa'?x.kw.filter(k=>String(v||'').toLowerCase().includes(k)).length>=x.min:v===x.a;
-const mmss=s=>String(Math.floor(s/60)).padStart(2, '0')+':'+String(s%60).padStart(2, '0');
-function clk() {
-    const c=document.querySelector('#clock');
-    if(!c||!run||!run.end)return;
-    const r=Math.max(0, Math.ceil((run.end-Date.now())/1000));
-    c.textContent='⏱ '+mmss(r)+' left';
-    c.classList.toggle('bad', r<=60)
-}
-function tick() {
-    if(!run||!run.end||run.done)return;
-    clk();
-    if(Date.now()>=run.end) {
-        const ta=document.querySelector('#sa');
-        if(ta&&run.a.length===run.i)run.a[run.i]=ta.value.trim();
-        fin(true)
-    }
-}
-let run;
-$('#qgo').onclick=()=> {
-    const tp=$('#qtp').value, ty=$('#qty').value, n=+$('#qn2').value;
-    let l=BANK.filter(b=>(tp==='All topics'||b.t===tp)&&(ty==='mixed'||b.type===ty));
-    if(ty==='mixed') {
-        const g=['mcq', 'tf', 'sa'].map(k=>l.filter(b=>b.type===k)), o=[];
-        for(let i=0; g.some(a=>i<a.length); i++)g.forEach(a=> {
-            if(a[i])o.push(a[i])
-        });
-        l=o
-    }
-    if(!l.length)l=BANK;
-    run= {
-        l:l.slice(0, n).map(shuf), i:0, a:[], start:Date.now()
-    };const lim= {
-        '2 min':120, '5 min':300, '10 min':600
-    }
-    [$('#qtm').value]||0;
-    if(lim) {
-        run.end=run.start+lim*1000;
-        run.tid=setInterval(tick, 500)
-    }
-    $('#qsetup').classList.add('hide');
-    $('#qres').classList.add('hide');
-    rq()
-};
-function rq() {
-    const c=$('#qrun'), x=run.l[run.i];
-    c.classList.remove('hide');
-    const body=x.type==='sa'?`<textarea id="sa" rows="4" placeholder="Type your answer in your own words…" aria-label="Your answer"></textarea><div class="tb" style="margin-top:12px"><span class="empty">Auto-marked by keywords, so it may not be perfect.</span><button class="btn" id="sub">Next →</button></div>`:x.o.map((o, i)=>`<button class="opt" data-i="${i}">${x.type==='tf'?'':'ABCD'[i]+'. '}${o}</button>`).join('');
-    c.innerHTML=`<div class="tb"><span class="tag">${x.t}</span>${run.end?'<span class="tag" id="clock"></span>':''}<span class="tag">${TL[x.type]} · ${run.i+1} of ${run.l.length}</span></div><div class="bar"><div style="width:${run.i/run.l.length*100}%"></div></div><h3>${x.q}</h3>${body}`;
-    if(run.end)clk();
-    if(x.type==='sa')$('#sa').focus()
-}
-const adv=v=> {
-    run.a.push(v);
-    run.i++;
-    run.i<run.l.length?rq():fin()
-};
-$('#qrun').onclick=e=> {
-    const b=e.target.closest('.opt');
-    if(b) {
-        if(run.a.length>run.i)return;
-        run.a.push(+b.dataset.i);
-        b.classList.add('sel');
-        setTimeout(()=> {
-            if(run.done)return; run.i++; run.i<run.l.length?rq():fin()
-        },350);
-        return
-    }
-    if(e.target.closest('#sub'))adv($('#sa').value.trim())
-};
-function fin(late) {
-    if(run.done)return;
-    run.done=true;
-    clearInterval(run.tid);
-    run.end=0;
-    setTimeout(save, 0);
-    $('#qrun').classList.add('hide');
-    const r=run.l.map((x, i)=>( {
-        x, pick:run.a[i], ok:okq(x, run.a[i])
-    })), sc=Math.round(r.filter(z=>z.ok).length/r.length*100), hasSA=run.l.some(x=>x.type==='sa');
-    const tp=$('#qtp').value;
-    S.hist.unshift( {
-        t:tp, s:sc, d:'Today'
-    });
-    r.forEach(z=> {
-        S.topics[z.x.t]=Math.round((S.topics[z.x.t]+(z.ok?100:0))/2)
-    });
-    const wrong=z=>z.x.type==='sa'?`Your answer: ${esc(z.pick||'(left blank)')}<br/>Model answer: ${z.x.ref}`:`Your answer: ${z.pick==null?'(not answered)':z.x.o[z.pick]}<br/>Correct: ${z.x.o[z.x.a]}${z.x.why?'<br/>Why: '+z.x.why:''}`;
-    const kinds=[...new Set(run.l.map(x=>x.type))].map(k=> {
-        const q=r.filter(z=>z.x.type===k); return `<span class="tag">${TL[k]}: ${q.filter(z=>z.ok).length}/${q.length}</span>`
-    }).join('');
-    $('#qres').classList.remove('hide');
-    $('#qres').innerHTML=`<div class="card"><h3>${sc>=80?'🎉 Excellent work!':sc>=50?'👍 Good effort!':'🌱 Good start, let’s improve'}</h3><div class="stat"><b>${sc}%</b><span>${r.filter(z=>z.ok).length} of ${r.length} correct</span></div>
- ${late?'<p class="empty" style="color:var(--bad)">⏰ Time is up! Unanswered questions were marked wrong.</p>':''}
- <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><span class="tag">⏱ ${mmss(Math.round((Date.now()-run.start)/1000))} used</span>${kinds}</div>
- ${r.filter(z=>!z.ok).map(z=>`<div class="rev"><b>$ {
-        z.x.q
-    }
-    </b><br/>$ {
-        wrong(z)
-    }
-    <br/><span class="src">📄 $ {
-        z.x.src
-    }
-    </span></div>`).join('')||'<p class="empty">No mistakes. Amazing! 🌟</p>'}
- ${hasSA?'<p class="empty">Short answers are auto-marked by keywords. Compare yours with the model answer yourself.</p>':''}
- <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap"><button class="btn" id="again">🔁 Practice similar questions</button><button class="btn ghost" id="seep">📈 See my progress</button></div></div>`;
-    $('#again').onclick=()=> {
-        $('#qres').classList.add('hide');
-        $('#qsetup').classList.remove('hide')
-    };$('#seep').onclick=()=>show('prog')
-}
-function prog() {
-    const ts=Object.entries(S.topics).sort((a, b)=>a[1]-b[1]);
-    $('#tacc').innerHTML=ts.map(t=>bar(t[0], t[1])).join('');
-    const w=ts[0];
-    $('#plan').innerHTML=w[1]<60?`<p style="font-size:14px;margin-bottom:10px"><b>${w[0]}</b> needs the most work (${w[1]}%).</p><ol style="padding-left:18px;font-size:14px;display:grid;gap:6px"><li>📖 Review the ${w[0]} slides</li><li>✍️ Solve 3 easy questions</li><li>📝 Attempt a medium quiz</li><li>🔍 Review your mistakes</li><li>🔁 Retry the quiz</li></ol><button class="btn" style="margin-top:14px" data-go="quiz" id="pp">Practice ${w[0]}</button>`:'<p style="font-size:14px">All topics are looking strong. Try a Hard quiz to stretch yourself! 🚀</p>';
-    const p=$('#pp');
-    if(p)p.onclick=()=> {
-        S.pick=w[0];
-        save();
-        show('quiz')
-    };
-    $('#hist').innerHTML=S.hist.map(h=>`<div class="file"><span>📝 ${h.t} <span style="color:var(--muted)">· ${h.d}</span></span><span class="tag ${h.s>=70?'ok':h.s<50?'bad':''}">${h.s}%</span></div>`).join('')
-}
-const esc=t=>String(t).replace(/[&<>]/g, c=>( {
-    '&':'&amp;', '<':'&lt;', '>':'&gt;'
-}
-[c]));
-const su=document.querySelector('.su');
-if(su) {
-    su.innerHTML=`<button class="ub" aria-haspopup="true" aria-expanded="false"><i>🧑‍🎓</i><span>${esc(S.set.name)}<br/><small>${esc(S.set.prog)}</small></span><b>▾</b></button>
- <div class="um hide" role="menu"><a href="StudyMate_settings.html">⚙️ Settings</a><a href="StudyMate_progress.html">📈 My progress</a><button id="lo">🚪 Log out</button></div>`;
-    const ub=su.querySelector('.ub'), um=su.querySelector('.um');
-    const tog=o=> {
-        um.classList.toggle('hide', !o);
-        ub.setAttribute('aria-expanded', o)
-    };
-    ub.onclick=e=> {
-        e.stopPropagation();
-        tog(um.classList.contains('hide'))
-    };
-    document.addEventListener('click', e=> {
-        if(!um.contains(e.target))tog(false)
-    });
-    document.addEventListener('keydown', e=> {
-        if(e.key==='Escape')tog(false)
-    });
-    su.querySelector('#lo').onclick=()=> {
-        location.href='StudyMate_login.html'
-    }
-}
-function settings() {
-    const s=S.set;
-    $('#sn').value=s.name;
-    $('#se').value=s.email;
-    $('#sp').value=s.prog;
-    $('#sm').value=s.mode;
-    $('#sg').value=s.goal;
-    $('#sr').value=s.rem||'Off';
-    const mk=()=>$$('#th button').forEach(b=>b.classList.toggle('on', b.dataset.t===s.theme));
-    mk();
-    $('#th').onclick=e=> {
-        const b=e.target.closest('button');
-        if(!b)return;
-        s.theme=b.dataset.t;
-        theme();
-        save();
-        mk()
-    };
-    $('#sv').onclick=()=> {
-        Object.assign(s, {
-            name:$('#sn').value.trim()||'Student', email:$('#se').value.trim(), prog:$('#sp').value.trim(), mode:$('#sm').value, goal:+$('#sg').value, rem:$('#sr').value
-        });
-        save();
-        $('#sm2').classList.remove('hide');
-        setTimeout(()=>location.reload(), 700)
-    };
-    $('#rst').onclick=()=> {
-        if(confirm('Reset all demo data (courses, quizzes and settings)?')) {
-            try {
-                localStorage.removeItem(KEY)
-            }
-            catch(e) {
-            }
-            location.reload()
-        }
-    };
-    $('#lo2').onclick=()=> {
-        location.href='StudyMate_login.html'
-    }
-}
-const PG=PAGE;
-( {
-    dash, courses:rCourses, ask:rSel, quiz:()=> {
-        rSel(); if(S.pick) {
-            $('#qtp').value=S.pick
-        }
-    },prog, settings
-}
-[PG]||(()=> {
-}))();
+  <script>
+(() => {
+    "use strict";
 
-// Games navigation: open the separate Games page when a Games button is clicked.
-document.querySelectorAll('button[data-v="games"]').forEach((button) => {
-    button.addEventListener('click', () => {
-        window.location.href = 'StudyMate_games.html';
+    // ============================================================
+    // 1. DJANGO API URLS
+    // ============================================================
+    // These URLs are handled by courses/quiz_views.py.
+
+    const API = {
+        materials: "/courses/course-materials/",
+        generateQuiz: "/courses/quiz/generate/",
+        startQuiz: (quizId) => `/courses/quiz/${quizId}/start/`,
+        submitQuiz: (attemptId) => `/courses/quiz/attempt/${attemptId}/submit/`
+    };
+
+    // ============================================================
+    // 2. HTML ELEMENTS
+    // ============================================================
+
+    const getElement = (id) => document.getElementById(id);
+
+    const setupSection = getElement("qsetup");
+    const questionSection = getElement("qrun");
+    const resultSection = getElement("qres");
+    const notice = getElement("notice");
+    const generateButton = getElement("qgo");
+
+    // ============================================================
+    // 3. QUIZ STATE (DATA USED WHILE TAKING A QUIZ)
+    // ============================================================
+
+    let courses = [];
+    let attemptId = null;
+    let questions = [];
+    let answers = {};
+    let currentQuestionIndex = 0;
+    let timerId = null;
+    let endTime = null;
+    let startTime = null;
+    let isSubmitting = false;
+
+    // ============================================================
+    // 4. HELPER FUNCTIONS
+    // ============================================================
+
+    function showNotice(message, type = "info") {
+        notice.textContent = message;
+        notice.className = `status ${type === "error" ? "error" : type === "success" ? "success" : ""}`;
+    }
+
+    function hideNotice() {
+        notice.classList.add("hide");
+    }
+
+    // Prevent question text and answers from being treated as HTML.
+    function escapeHtml(value) {
+        const replacements = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        };
+
+        return String(value ?? "").replace(/[&<>"']/g, (char) => replacements[char]);
+    }
+
+    function getCookie(name) {
+        const cookies = document.cookie.split(";");
+
+        for (const cookie of cookies) {
+            const [cookieName, ...parts] = cookie.trim().split("=");
+
+            if (cookieName === name) {
+                return decodeURIComponent(parts.join("="));
+            }
+        }
+
+        return "";
+    }
+
+    // Send a request to Django and return the JSON response.
+    async function apiRequest(url, method = "GET", body = null) {
+        const headers = {};
+
+        if (body !== null) {
+            headers["Content-Type"] = "application/json";
+        }
+
+        if (method !== "GET") {
+            const csrfToken = getCookie("csrftoken");
+
+            if (csrfToken) {
+                headers["X-CSRFToken"] = csrfToken;
+            }
+        }
+
+        let response;
+
+        try {
+            response = await fetch(url, {
+                method: method,
+                credentials: "same-origin",
+                headers: headers,
+                body: body === null ? undefined : JSON.stringify(body)
+            });
+        } catch (error) {
+            throw new Error("Cannot connect to StudyMate. Check that Django is running.");
+        }
+
+        let data = {};
+
+        try {
+            data = await response.json();
+        } catch (error) {
+            // A non-JSON response, such as an HTML error page.
+        }
+
+        if (!response.ok) {
+            throw new Error(data.error || data.detail || `Request failed (${response.status}).`);
+        }
+
+        return data;
+    }
+
+    function getQuestionType(question) {
+        return question.type || question.question_type || "mcq";
+    }
+
+    function getQuestionText(question) {
+        return question.question || question.question_text || "Question";
+    }
+
+    function getOptions(question) {
+        return Array.isArray(question.options) ? question.options : [];
+    }
+
+    function isShortAnswer(question) {
+        return ["sa", "short_answer"].includes(getQuestionType(question));
+    }
+
+    function formatTime(seconds) {
+        const minutes = String(Math.floor(seconds / 60)).padStart(2, "0");
+        const remainingSeconds = String(seconds % 60).padStart(2, "0");
+        return `${minutes}:${remainingSeconds}`;
+    }
+
+    function formatDuration(seconds) {
+        const duration = Math.max(0, Math.floor(Number(seconds) || 0));
+        return `${Math.floor(duration / 60)}m ${duration % 60}s`;
+    }
+
+    // ============================================================
+    // 5. LOAD COURSES AND UPLOADED LECTURES
+    // ============================================================
+
+    async function loadCourses() {
+        try {
+            const data = await apiRequest(API.materials);
+            courses = data.courses || [];
+
+            const courseSelect = getElement("qc");
+            courseSelect.innerHTML = "";
+
+            if (courses.length === 0) {
+                courseSelect.add(new Option("No courses found", ""));
+                getElement("qm").innerHTML = '<option value="">No lecture materials</option>';
+                return;
+            }
+
+            for (const course of courses) {
+                const label = `${course.course_code} — ${course.course_name}`;
+                courseSelect.add(new Option(label, course.id));
+            }
+
+            loadLectureOptions();
+        } catch (error) {
+            getElement("qc").innerHTML = '<option value="">Could not load courses</option>';
+            showNotice(error.message, "error");
+        }
+    }
+
+    // Only show lectures that have already been indexed.
+    function loadLectureOptions() {
+        const selectedCourseId = getElement("qc").value;
+        const selectedCourse = courses.find(
+            (course) => String(course.id) === selectedCourseId
+        );
+
+        const lectureSelect = getElement("qm");
+        lectureSelect.innerHTML = "";
+
+        const indexedLectures = selectedCourse
+            ? (selectedCourse.materials || []).filter((material) => material.indexed)
+            : [];
+
+        if (indexedLectures.length === 0) {
+            const message = selectedCourse
+                ? "No indexed lecture materials available"
+                : "Select a course first";
+
+            lectureSelect.add(new Option(message, ""));
+            lectureSelect.disabled = true;
+            return;
+        }
+
+        for (const material of indexedLectures) {
+            const label = `${material.title} (${material.filename || "lecture"})`;
+            lectureSelect.add(new Option(label, material.id));
+        }
+
+        lectureSelect.disabled = false;
+    }
+
+    // ============================================================
+    // 6. GENERATE QUESTIONS AND START AN ATTEMPT
+    // ============================================================
+
+    function getQuizSettings() {
+        return {
+            material_id: Number(getElement("qm").value),
+            number_of_questions: Number(getElement("qn2").value),
+            question_type: getElement("qty").value,
+            difficulty: getElement("qd").value,
+            topic: getElement("qtp").value.trim() || "All topics",
+            time_limit_seconds: Number(getElement("qtm").value)
+        };
+    }
+
+    function setGenerating(isGenerating) {
+        generateButton.disabled = isGenerating;
+        generateButton.textContent = isGenerating
+            ? "Generating questions…"
+            : "🚀 Generate quiz";
+    }
+
+    async function generateAndStartQuiz() {
+        hideNotice();
+
+        const settings = getQuizSettings();
+
+        if (!settings.material_id) {
+            showNotice("Please select a course and an indexed lecture.", "error");
+            return;
+        }
+
+        setGenerating(true);
+
+        try {
+            // First request: Gemini questions are created and saved to MySQL.
+            const generatedQuiz = await apiRequest(API.generateQuiz, "POST", settings);
+
+            if (!generatedQuiz.quiz_id) {
+                throw new Error("The server did not return a quiz ID.");
+            }
+
+            showNotice("Questions generated. Preparing your quiz…");
+
+            // Second request: create a student attempt in MySQL.
+            const attempt = await apiRequest(
+                API.startQuiz(generatedQuiz.quiz_id),
+                "POST",
+                {}
+            );
+
+            if (!attempt.attempt_id || !attempt.questions?.length) {
+                throw new Error("The quiz was created, but no questions were returned.");
+            }
+
+            attemptId = attempt.attempt_id;
+            questions = attempt.questions;
+            answers = {};
+            currentQuestionIndex = 0;
+            startTime = Date.now();
+            isSubmitting = false;
+
+            const timeLimit = Number(
+                attempt.time_limit_seconds ?? settings.time_limit_seconds
+            );
+
+            endTime = timeLimit > 0 ? Date.now() + timeLimit * 1000 : null;
+
+            setupSection.classList.add("hide");
+            resultSection.classList.add("hide");
+            questionSection.classList.remove("hide");
+            hideNotice();
+
+            displayCurrentQuestion();
+            startTimer();
+        } catch (error) {
+            showNotice(error.message, "error");
+        } finally {
+            setGenerating(false);
+        }
+    }
+
+    // ============================================================
+    // 7. DISPLAY QUESTIONS AND SAVE SELECTED ANSWERS
+    // ============================================================
+
+    function buildAnswerInputs(question) {
+        const savedAnswer = answers[String(question.id)];
+
+        if (isShortAnswer(question)) {
+            return `
+                <textarea
+                    class="answer-text"
+                    id="shortAnswer"
+                    rows="4"
+                    placeholder="Type your answer in your own words…"
+                >${escapeHtml(savedAnswer || "")}</textarea>
+            `;
+        }
+
+        return getOptions(question).map((option, index) => {
+            const selected = savedAnswer === index ? "selected" : "";
+            const letter = getQuestionType(question) === "mcq" ? `${"ABCD"[index]}. ` : "";
+
+            return `
+                <button
+                    type="button"
+                    class="opt ${selected}"
+                    data-answer="${index}"
+                >${letter}${escapeHtml(option)}</button>
+            `;
+        }).join("");
+    }
+
+    function displayCurrentQuestion() {
+        const question = questions[currentQuestionIndex];
+
+        if (!question) {
+            return;
+        }
+
+        const isLast = currentQuestionIndex === questions.length - 1;
+        const nextLabel = isLast ? "Submit quiz" : "Next question →";
+        const progressPercent = (currentQuestionIndex / questions.length) * 100;
+        const clockText = endTime ? `⏱ ${getRemainingTime()}` : "No time limit";
+
+        questionSection.innerHTML = `
+            <div class="question-head">
+                <span class="tag">Question ${currentQuestionIndex + 1} of ${questions.length}</span>
+                <span class="tag" id="clock">${clockText}</span>
+            </div>
+
+            <div class="bar">
+                <div style="width: ${progressPercent}%"></div>
+            </div>
+
+            <h3 class="question">${escapeHtml(getQuestionText(question))}</h3>
+
+            ${buildAnswerInputs(question)}
+
+            <div class="run-actions">
+                <button class="btn" id="nextQuestion">${nextLabel}</button>
+            </div>
+        `;
+
+        // Click a multiple-choice or True/False option.
+        const optionButtons = questionSection.querySelectorAll("[data-answer]");
+
+        for (const button of optionButtons) {
+            button.addEventListener("click", () => {
+                answers[String(question.id)] = Number(button.dataset.answer);
+
+                for (const otherButton of optionButtons) {
+                    otherButton.classList.toggle("selected", otherButton === button);
+                }
+            });
+        }
+
+        getElement("nextQuestion").addEventListener("click", goToNextQuestion);
+    }
+
+    function saveCurrentShortAnswer() {
+        const question = questions[currentQuestionIndex];
+
+        if (question && isShortAnswer(question)) {
+            const input = getElement("shortAnswer");
+            answers[String(question.id)] = input ? input.value.trim() : "";
+        }
+    }
+
+    function goToNextQuestion() {
+        if (isSubmitting) {
+            return;
+        }
+
+        saveCurrentShortAnswer();
+
+        if (currentQuestionIndex < questions.length - 1) {
+            currentQuestionIndex += 1;
+            displayCurrentQuestion();
+        } else {
+            submitAnswers(false);
+        }
+    }
+
+    // ============================================================
+    // 8. QUIZ TIMER
+    // ============================================================
+
+    function getRemainingSeconds() {
+        if (!endTime) {
+            return 0;
+        }
+
+        return Math.max(0, Math.ceil((endTime - Date.now()) / 1000));
+    }
+
+    function getRemainingTime() {
+        return formatTime(getRemainingSeconds());
+    }
+
+    function stopTimer() {
+        if (timerId !== null) {
+            clearInterval(timerId);
+            timerId = null;
+        }
+    }
+
+    function startTimer() {
+        stopTimer();
+
+        if (endTime) {
+            timerId = setInterval(updateTimer, 500);
+        }
+    }
+
+    function updateTimer() {
+        const clock = getElement("clock");
+
+        if (clock) {
+            clock.textContent = `⏱ ${getRemainingTime()}`;
+        }
+
+        if (endTime && getRemainingSeconds() === 0) {
+            stopTimer();
+            saveCurrentShortAnswer();
+            submitAnswers(true);
+        }
+    }
+
+    // ============================================================
+    // 9. SEND ANSWERS TO DJANGO FOR GRADING
+    // ============================================================
+
+    async function submitAnswers(timeExpired) {
+        if (isSubmitting || attemptId === null) {
+            return;
+        }
+
+        isSubmitting = true;
+        stopTimer();
+
+        const submitButton = getElement("nextQuestion");
+
+        if (submitButton) {
+            submitButton.disabled = true;
+        }
+
+        showNotice("Submitting your answers…");
+
+        try {
+            const result = await apiRequest(
+                API.submitQuiz(attemptId),
+                "POST",
+                { answers: answers }
+            );
+
+            displayResults(result, timeExpired);
+        } catch (error) {
+            showNotice(error.message, "error");
+
+            if (submitButton) {
+                submitButton.disabled = false;
+            }
+
+            // Keep the attempt available for another submission attempt.
+            // The backend may reject requests after its deadline.
+        } finally {
+            isSubmitting = false;
+        }
+    }
+
+    // ============================================================
+    // 10. SHOW SCORE AND ANSWER REVIEW
+    // ============================================================
+
+    function formatAnswer(answer, question) {
+        if (answer === null || answer === undefined || answer === "") {
+            return "(not answered)";
+        }
+
+        if (typeof answer === "number" && question) {
+            return getOptions(question)[answer] ?? String(answer);
+        }
+
+        if (typeof answer === "boolean") {
+            return answer ? "True" : "False";
+        }
+
+        return String(answer);
+    }
+
+    function buildReviewItem(result, index) {
+        const question = questions.find((item) => item.id === result.question_id);
+        const statusClass = result.is_correct ? "correct" : "";
+        const statusText = result.is_correct ? "✓ Correct" : "✗ Incorrect";
+
+        const studentAnswer = escapeHtml(formatAnswer(result.student_answer, question));
+        const correctAnswer = escapeHtml(formatAnswer(result.correct_answer, question));
+        const explanation = result.explanation
+            ? `<p style="margin-top:6px">Explanation: ${escapeHtml(result.explanation)}</p>`
+            : "";
+
+        return `
+            <div class="review ${statusClass}">
+                <b>${index + 1}. ${escapeHtml(result.question || "Question")}</b>
+                <p style="margin-top:6px">Your answer: ${studentAnswer}</p>
+                <p>Correct answer: ${correctAnswer}</p>
+                ${explanation}
+                <p style="margin-top:5px"><b>${statusText}</b></p>
+            </div>
+        `;
+    }
+
+    function displayResults(result, timeExpired) {
+        stopTimer();
+        questionSection.classList.add("hide");
+        resultSection.classList.remove("hide");
+        hideNotice();
+
+        const score = Number(result.score ?? 0);
+        const correct = Number(result.correct_answers ?? 0);
+        const total = Number(result.total_questions ?? questions.length);
+        const incorrect = Number(result.incorrect_answers ?? total - correct);
+        const duration = result.time_taken_seconds
+            ?? Math.round((Date.now() - startTime) / 1000);
+
+        let heading = "🌱 Good start — keep practising!";
+
+        if (score >= 80) {
+            heading = "🎉 Excellent work!";
+        } else if (score >= 50) {
+            heading = "👍 Good effort!";
+        }
+
+        const reviewHtml = (result.results || [])
+            .map((item, index) => buildReviewItem(item, index))
+            .join("");
+
+        resultSection.innerHTML = `
+            <h3>${heading}</h3>
+            <div class="result-score">${score.toFixed(1)}%</div>
+            <p>${correct} of ${total} correct answers</p>
+
+            <div class="actions">
+                <span class="tag">Correct: ${correct}</span>
+                <span class="tag">Incorrect: ${incorrect}</span>
+                <span class="tag">Time: ${formatDuration(duration)}</span>
+            </div>
+
+            ${timeExpired ? '<p class="status error">⏰ Time is up. The quiz was submitted automatically.</p>' : ""}
+
+            <h3 style="margin-top:24px">Answer review</h3>
+            ${reviewHtml || '<p class="muted">No detailed review was returned.</p>'}
+
+            <div class="actions">
+                <button class="btn" id="tryAgain">🔁 Create another quiz</button>
+                <button class="btn ghost" id="backSetup">Back to quiz setup</button>
+            </div>
+        `;
+
+        getElement("tryAgain").addEventListener("click", resetQuiz);
+        getElement("backSetup").addEventListener("click", resetQuiz);
+    }
+
+    // ============================================================
+    // 11. RESET THE QUIZ
+    // ============================================================
+
+    function resetQuiz() {
+        stopTimer();
+        attemptId = null;
+        questions = [];
+        answers = {};
+        currentQuestionIndex = 0;
+        endTime = null;
+        startTime = null;
+        isSubmitting = false;
+
+        questionSection.classList.add("hide");
+        resultSection.classList.add("hide");
+        setupSection.classList.remove("hide");
+        hideNotice();
+    }
+
+    // ============================================================
+    // 12. EVENT LISTENERS AND PAGE INITIALIZATION
+    // ============================================================
+
+    getElement("qc").addEventListener("change", loadLectureOptions);
+    generateButton.addEventListener("click", generateAndStartQuiz);
+
+    document.querySelectorAll("#nav button[data-url]").forEach((button) => {
+        button.addEventListener("click", () => {
+            window.location.href = button.dataset.url;
+        });
     });
-});
+
+    loadCourses();
+})();
 </script>
-</body>
+ </body>
 </html>
