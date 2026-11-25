@@ -159,4 +159,3 @@ LECTURE CONTENT:
         "total_cards": len(validated_cards[:number_of_cards]),
         "style": card_style
     }
-
