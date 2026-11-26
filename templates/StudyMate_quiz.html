@@ -237,6 +237,17 @@ main{
 .review.correct{
     border-left-color:var(--ok);
     background:var(--okl)}
+    .review.partial{
+     border-left-color:#D68B16;
+     background:#FFF4DC}
+    .tag.partial{
+     background:#FFF4DC;
+     color:#94600B}
+    .review-feedback{
+     margin-top:7px;
+     color:#514C5B}
+    .review-marks{
+     font-weight:700}
 .actions{
     display:flex;
     gap:10px;
@@ -937,15 +948,31 @@ footer{
         return String(answer);
     }
 
+    function getAwardedMarks(result) {
+        // New backend returns marks_awarded: 0, 0.5 or 1.
+        // Keep backward compatibility with old True/False responses.
+        const value = Number(result.marks_awarded);
+        if (result.marks_awarded === null || result.marks_awarded === undefined || !Number.isFinite(value)) {
+            return result.is_correct ? 1 : 0;
+        }
+        return value;
+    }
+
     function buildReviewItem(result, index) {
-        const question = questions.find((item) => item.id === result.question_id);
-        const statusClass = result.is_correct ? "correct" : "";
-        const statusText = result.is_correct ? "✓ Correct" : "✗ Incorrect";
+        const question = questions.find((item) => String(item.id) === String(result.question_id));
+        const marks = getAwardedMarks(result);
+        const statusClass = marks >= 1 ? "correct" : marks > 0 ? "partial" : "";
+        const statusText = marks >= 1
+            ? "✓ Fully correct"
+            : marks > 0 ? "◐ Partially correct" : "✗ Incorrect";
 
         const studentAnswer = escapeHtml(formatAnswer(result.student_answer, question));
         const correctAnswer = escapeHtml(formatAnswer(result.correct_answer, question));
         const explanation = result.explanation
             ? `<p style="margin-top:6px">Explanation: ${escapeHtml(result.explanation)}</p>`
+            : "";
+        const feedback = result.feedback
+            ? `<p class="review-feedback">Feedback: ${escapeHtml(result.feedback)}</p>`
             : "";
 
         return `
@@ -954,7 +981,8 @@ footer{
                 <p style="margin-top:6px">Your answer: ${studentAnswer}</p>
                 <p>Correct answer: ${correctAnswer}</p>
                 ${explanation}
-                <p style="margin-top:5px"><b>${statusText}</b></p>
+                ${feedback}
+                <p style="margin-top:7px" class="review-marks">${statusText} — ${marks.toFixed(2)} / 1.00 mark</p>
             </div>
         `;
     }
@@ -968,7 +996,16 @@ footer{
         const score = Number(result.score ?? 0);
         const correct = Number(result.correct_answers ?? 0);
         const total = Number(result.total_questions ?? questions.length);
-        const incorrect = Number(result.incorrect_answers ?? total - correct);
+        const reviewResults = Array.isArray(result.results) ? result.results : [];
+        const partial = Number(result.partial_answers ?? reviewResults.filter((item) => {
+            const marks = getAwardedMarks(item);
+            return marks > 0 && marks < 1;
+        }).length);
+        const incorrect = Number(result.incorrect_answers ?? Math.max(0, total - correct - partial));
+        const earnedMarks = Number(result.total_marks ?? reviewResults.reduce(
+            (sum, item) => sum + getAwardedMarks(item), 0
+        ));
+        const maximumMarks = Number(result.maximum_marks ?? total);
         const duration = result.time_taken_seconds
             ?? Math.round((Date.now() - startTime) / 1000);
 
@@ -980,17 +1017,18 @@ footer{
             heading = "👍 Good effort!";
         }
 
-        const reviewHtml = (result.results || [])
+        const reviewHtml = reviewResults
             .map((item, index) => buildReviewItem(item, index))
             .join("");
 
         resultSection.innerHTML = `
             <h3>${heading}</h3>
             <div class="result-score">${score.toFixed(1)}%</div>
-            <p>${correct} of ${total} correct answers</p>
+            <p>${earnedMarks.toFixed(2)} out of ${maximumMarks.toFixed(2)} marks earned (${correct} fully correct, ${partial} partially correct)</p>
 
             <div class="actions">
                 <span class="tag">Correct: ${correct}</span>
+                <span class="tag partial">Partial: ${partial}</span>
                 <span class="tag">Incorrect: ${incorrect}</span>
                 <span class="tag">Time: ${formatDuration(duration)}</span>
             </div>
